@@ -26,4 +26,8 @@
 
     <color name="black_day_white_night">@color/black</color>
     <color name="white_day_black_night">@color/white</color>
+    <color name="search_bar_color">#E1E1E1</color>
+    <color name="fragment_background">#FFECF1</color>
+    <color name="results">#986977</color>
+    <color name="button_color">#EFB8C8</color>
 </resources>

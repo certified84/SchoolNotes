@@ -21,7 +21,7 @@
 
         <variable
             name="bookMark"
-            type="com.certified.schoolnotes.model.BookMark" />
+            type="com.certified.schoolnotes.model.Bookmark" />
 
         <import type="com.certified.schoolnotes.util.UtilKt" />
     </data>

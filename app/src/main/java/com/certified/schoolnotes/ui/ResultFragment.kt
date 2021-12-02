@@ -14,14 +14,25 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes
+package com.certified.schoolnotes.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.certified.schoolnotes.databinding.FragmentResultBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class ResultFragment : Fragment() {
+
+    private lateinit var binding: FragmentResultBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        // Inflate the layout for this fragment
+        binding = FragmentResultBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 }

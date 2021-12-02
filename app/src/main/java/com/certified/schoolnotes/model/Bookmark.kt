@@ -32,7 +32,7 @@ import com.certified.schoolnotes.util.colors
  */
 
 //@Entity(tableName = "bookmark_table")
-data class BookMark(
+data class Bookmark(
 //    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
 //    @ColumnInfo(name = "course_code")

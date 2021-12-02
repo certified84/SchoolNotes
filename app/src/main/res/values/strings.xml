@@ -16,4 +16,17 @@
 
 <resources>
     <string name="app_name">School Notes</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="courses">Courses</string>
+    <string name="units">Units</string>
+    <string name="marks">Marks</string>
+    <string name="note_title">Note title (required)</string>
+    <string name="note_content">Type your note content here</string>
+    <string name="save">Save</string>
+
+    <string-array name="courses">
+        <item>"Select course"</item>
+        <item>"No course"</item>
+    </string-array>
 </resources>
