@@ -17,23 +17,29 @@
 package com.certified.schoolnotes.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.certified.schoolnotes.R
+import androidx.fragment.app.Fragment
 import com.certified.schoolnotes.databinding.FragmentBookmarksBinding
 
 class BookmarksFragment : Fragment() {
 
-    private lateinit var binding: FragmentBookmarksBinding
+    private var _binding: FragmentBookmarksBinding? = null
+    private val binding: FragmentBookmarksBinding?
+        get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentBookmarksBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        _binding = FragmentBookmarksBinding.inflate(layoutInflater, container, false)
+        return binding?.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

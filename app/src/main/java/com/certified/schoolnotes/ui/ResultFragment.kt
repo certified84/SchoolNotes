@@ -25,14 +25,21 @@ import com.certified.schoolnotes.databinding.FragmentResultBinding
 
 class ResultFragment : Fragment() {
 
-    private lateinit var binding: FragmentResultBinding
+    private var _binding: FragmentResultBinding? = null
+    private val binding: FragmentResultBinding?
+        get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentResultBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        _binding = FragmentResultBinding.inflate(layoutInflater, container, false)
+        return binding?.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

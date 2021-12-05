@@ -25,14 +25,21 @@ import com.certified.schoolnotes.databinding.FragmentTodoBinding
 
 class TodoFragment : Fragment() {
 
-    private lateinit var binding: FragmentTodoBinding
+    private var _binding: FragmentTodoBinding? = null
+    private val binding: FragmentTodoBinding?
+        get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentTodoBinding.inflate(layoutInflater, container, false)
-        return binding.root
+        _binding = FragmentTodoBinding.inflate(layoutInflater, container, false)
+        return binding?.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
