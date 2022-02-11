@@ -29,8 +29,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="0dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -48,12 +48,12 @@
             <TextView
                 android:id="@+id/tv_todo"
                 android:layout_width="0dp"
-                android:text="@{todo.todo}"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:text="@{todo.todo}"
                 android:textAppearance="?attr/textAppearanceBody1"
                 app:layout_constraintEnd_toStartOf="@+id/checkbox_todo"
                 app:layout_constraintStart_toEndOf="@+id/appCompatImageView"

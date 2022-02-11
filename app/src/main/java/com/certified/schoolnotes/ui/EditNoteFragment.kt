@@ -28,17 +28,16 @@ import com.certified.schoolnotes.databinding.FragmentEditNoteBinding
 class EditNoteFragment : Fragment() {
 
     private var _binding: FragmentEditNoteBinding? = null
-    private val binding: FragmentEditNoteBinding?
-        get() = _binding
+    private val binding get() = _binding!!
     private var courses = mutableListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentEditNoteBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +55,7 @@ class EditNoteFragment : Fragment() {
             courses
         )
 
-        binding?.apply {
+        binding.apply {
             autoCompleteTextView.setAdapter(adapterCourses)
         }
     }

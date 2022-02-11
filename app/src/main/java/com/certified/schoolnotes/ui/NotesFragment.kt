@@ -26,16 +26,15 @@ import com.certified.schoolnotes.databinding.FragmentNotesBinding
 class NotesFragment : Fragment() {
 
     private var _binding: FragmentNotesBinding? = null
-    private val binding: FragmentNotesBinding?
-        get() = _binding
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentNotesBinding.inflate(layoutInflater, container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onDestroyView() {
