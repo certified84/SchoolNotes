@@ -18,6 +18,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -49,6 +50,11 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 }
 
@@ -88,7 +94,7 @@ dependencies {
 
 //    Retrofit, Moshi & Gson
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.google.code.gson:gson:2.8.7"
+    implementation "com.google.code.gson:gson:2.8.9"
     implementation "com.squareup.moshi:moshi-kotlin:1.9.3"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"

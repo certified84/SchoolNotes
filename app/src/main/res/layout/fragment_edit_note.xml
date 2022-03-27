@@ -23,7 +23,7 @@
 
         <variable
             name="note"
-            type="com.certified.schoolnotes.model.Note" />
+            type="com.certified.schoolnotes.data.model.Note" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
