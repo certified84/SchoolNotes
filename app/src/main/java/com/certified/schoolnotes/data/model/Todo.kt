@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes.model
+package com.certified.schoolnotes.data.model
 
 /**
  * NoteEntry class represent the domain model i.e the

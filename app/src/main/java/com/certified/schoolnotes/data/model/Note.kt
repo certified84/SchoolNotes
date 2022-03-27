@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes.model
+package com.certified.schoolnotes.data.model
 
 import com.certified.schoolnotes.util.colors
+import java.util.*
 
 /**
  * Note class represent the domain model i.e the
@@ -44,5 +45,5 @@ data class Note(
     val content: String = "",
 //    @ColumnInfo(name = "note_color")
     var color: Int = colors.random(),
-    var date: Long? = null
+    var date: Long? = Calendar.getInstance().timeInMillis
 )
