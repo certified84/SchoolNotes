@@ -22,7 +22,7 @@
 
         <variable
             name="todo"
-            type="com.certified.schoolnotes.model.Todo" />
+            type="com.certified.schoolnotes.data.model.Todo" />
 
         <import type="com.certified.schoolnotes.util.UtilKt" />
     </data>

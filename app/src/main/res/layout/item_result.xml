@@ -22,7 +22,7 @@
 
         <variable
             name="course"
-            type="com.certified.schoolnotes.model.Course" />
+            type="com.certified.schoolnotes.data.model.Course" />
     </data>
 
     <androidx.cardview.widget.CardView
