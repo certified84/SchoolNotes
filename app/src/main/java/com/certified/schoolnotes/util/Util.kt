@@ -47,14 +47,13 @@ fun formatDate(date: Long): String {
     }
 }
 
-fun formatReminderDate(date: Long): String {
-    return SimpleDateFormat("dd MMM, yyyy h:mm a", Locale.getDefault()).format(date)
-}
+fun formatReminderDate(date: Long): String =
+    SimpleDateFormat("dd MMM, yyyy h:mm a", Locale.getDefault()).format(date)
 
-fun formatDateOnly(date: Long): String {
-    return SimpleDateFormat("dd MMM, yyyy", Locale.getDefault()).format(date)
-}
+fun formatDateOnly(date: Long): String =
+    SimpleDateFormat("dd MMM, yyyy", Locale.getDefault()).format(date)
 
-fun formatTime(date: Long): String {
-    return SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
-}
+fun formatTime(date: Long): String = SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
+
+fun formatSimpleDate(date: Long): String =
+    SimpleDateFormat("dd/MM/yy", Locale.getDefault()).format(date)
