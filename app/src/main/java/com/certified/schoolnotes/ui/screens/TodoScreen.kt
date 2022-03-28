@@ -16,26 +16,73 @@
 
 package com.certified.schoolnotes.ui.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.fontResource
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.certified.schoolnotes.R
+import com.certified.schoolnotes.model.Todo
+import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 
+//@Preview(showBackground = true)
 @Composable
 fun TodoScreen() {
 
     Surface {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 16.dp, end = 16.dp)) {
-            
-            Text(text = "To-Dos", fontSize = 18.sp )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+
+            Text(
+                text = "To-Dos",
+                fontSize = 18.sp,
+                fontFamily = SpaceGrotesk,
+                color = colorResource(id = R.color.black_day_white_night),
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .align(alignment = Alignment.CenterHorizontally)
+                    .padding(top = 16.dp)
+            )
+
+            Surface(
+                color = colorResource(id = R.color.color_primary),
+                modifier = Modifier.fillMaxWidth().height(60.dp).padding(top = 8.dp)
+            ) {
+                Row {
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_todo_circle),
+//                        contentDescription = "Todo circle"
+//                    )
+                    var text by remember { mutableStateOf("All") }
+                    TextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+//                    Icon(
+//                        painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
+//                        contentDescription = "Delete icon"
+//                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun TodoItem(todo: Todo, onClick: () -> Unit) {
+    Surface(onClick = onClick) {
+        Column {
 
         }
     }
