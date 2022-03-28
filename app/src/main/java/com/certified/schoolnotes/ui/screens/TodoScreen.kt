@@ -16,9 +16,6 @@
 
 package com.certified.schoolnotes.ui.screens
 
-import android.content.Context
-import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +30,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.certified.schoolnotes.R
@@ -55,10 +54,10 @@ fun TodoScreen() {
 
         Text(
             text = "To-Dos",
-            fontSize = 18.sp,
+            fontSize = 20.sp,
             fontFamily = SpaceGrotesk,
             color = colorResource(id = R.color.black_day_white_night),
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
                 .padding(top = 16.dp)
@@ -88,12 +87,19 @@ fun TodoScreen() {
                 var expanded by remember { mutableStateOf(false) }
                 DropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onDismissRequest = { expanded = false },
+//                    modifier = Modifier.align(Alignment.End)
                 ) {
-                    DropdownMenuItem(onClick = { showToast(context, "Deleted all to-dos") }) {
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Deleted all to-dos")
+                        expanded = false
+                    }) {
                         Text("Delete all to-dos")
                     }
-                    DropdownMenuItem(onClick = { showToast(context, "Deleted all completed to-dos") }) {
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Deleted all completed to-dos")
+                        expanded = false
+                    }) {
                         Text("Delete all completed to-dos")
                     }
                 }
@@ -138,22 +144,6 @@ fun TodoScreen() {
             )
         )
     }
-}
-
-fun showDeletePopupMenu(context: Context, view: View) {
-    val menu = PopupMenu(context, view)
-    menu.setOnMenuItemClickListener {
-        when (it.itemId) {
-            R.id.delete_all_todos -> showToast(context, "All todos deleted successfully")
-            R.id.delete_all_completed_todos -> showToast(
-                context,
-                "All completed todos deleted successfully"
-            )
-        }
-        true
-    }
-    menu.inflate(R.menu.todo_menu)
-    menu.show()
 }
 
 @Composable

@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
-import com.certified.schoolnotes.ui.screens.TodoScreen
+import com.certified.schoolnotes.ui.screens.ResultScreen
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -30,13 +30,15 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
 
-            SchoolNotesTheme {
+            SchoolNotesTheme(
+                darkTheme = false
+            ) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    TodoScreen()
+                    ResultScreen()
                 }
             }
         }
