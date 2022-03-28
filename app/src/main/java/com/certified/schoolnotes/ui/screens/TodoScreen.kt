@@ -16,6 +16,9 @@
 
 package com.certified.schoolnotes.ui.screens
 
+import android.content.Context
+import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +29,8 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,11 +39,14 @@ import androidx.compose.ui.unit.sp
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.model.Todo
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
+import com.certified.schoolnotes.util.Extensions.showToast
+import com.certified.schoolnotes.util.formatReminderDate
 
 //@Preview(showBackground = true)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TodoScreen() {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,15 +85,25 @@ fun TodoScreen() {
                     onValueChange = { text = it },
                     modifier = Modifier.padding(start = 8.dp)
                 )
+                var expanded by remember { mutableStateOf(false) }
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    DropdownMenuItem(onClick = { showToast(context, "Deleted all to-dos") }) {
+                        Text("Delete all to-dos")
+                    }
+                    DropdownMenuItem(onClick = { showToast(context, "Deleted all completed to-dos") }) {
+                        Text("Delete all completed to-dos")
+                    }
+                }
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
                     contentDescription = "Delete icon",
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(end = 24.dp)
-                        .clickable {
-
-                        }
+                        .clickable { expanded = true }
                 )
             }
         }
@@ -122,6 +140,22 @@ fun TodoScreen() {
     }
 }
 
+fun showDeletePopupMenu(context: Context, view: View) {
+    val menu = PopupMenu(context, view)
+    menu.setOnMenuItemClickListener {
+        when (it.itemId) {
+            R.id.delete_all_todos -> showToast(context, "All todos deleted successfully")
+            R.id.delete_all_completed_todos -> showToast(
+                context,
+                "All completed todos deleted successfully"
+            )
+        }
+        true
+    }
+    menu.inflate(R.menu.todo_menu)
+    menu.show()
+}
+
 @Composable
 fun ListTodos(todos: List<Todo>) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -141,7 +175,7 @@ fun TodoItem(todo: Todo) {
                 painter = painterResource(id = R.drawable.ic_todo_eclipse_10dp),
                 contentDescription = "Todo icon",
                 modifier = Modifier
-                    .padding(start = 24.dp, top = 4.dp)
+                    .padding(start = 32.dp, top = 4.dp)
                     .align(Alignment.CenterVertically)
             )
             Text(
@@ -151,7 +185,7 @@ fun TodoItem(todo: Todo) {
                 color = colorResource(id = R.color.black_day_white_night),
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
-                    .padding(start = 20.dp, top = 4.dp)
+                    .padding(start = 32.dp, top = 4.dp)
                     .align(alignment = Alignment.CenterVertically),
                 maxLines = 1
             )
@@ -160,12 +194,31 @@ fun TodoItem(todo: Todo) {
                 checked = isChecked,
                 onCheckedChange = { isChecked = it },
                 modifier = Modifier
-                    .padding(top = 4.dp)
+                    .padding(top = 4.dp, end = 24.dp)
                     .align(Alignment.CenterVertically)
             )
         }
-        Row {
-
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification_icon_24dp),
+                contentDescription = "Todo icon",
+                modifier = Modifier
+                    .padding(start = 24.dp)
+                    .align(Alignment.CenterVertically)
+                    .alpha(.7f)
+            )
+            Text(
+                text = if (todo.reminder == null) "No reminder set" else formatReminderDate(todo.reminder!!),
+                fontSize = 14.sp,
+                fontFamily = SpaceGrotesk,
+                color = colorResource(id = R.color.black_day_white_night),
+                fontWeight = FontWeight.Light,
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .align(alignment = Alignment.CenterVertically)
+                    .alpha(.7f),
+                maxLines = 1
+            )
         }
     }
 }
