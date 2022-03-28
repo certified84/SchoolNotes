@@ -24,6 +24,8 @@
     <string name="note_title">Note title (required)</string>
     <string name="note_content">Type your note content here</string>
     <string name="save">Save</string>
+    <string name="delete_all_todos">Delete all to-dos</string>
+    <string name="delete_all_completed_todos">Delete all completed to-dos</string>
 
     <string-array name="courses">
         <item>"Select course"</item>

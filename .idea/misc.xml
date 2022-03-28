@@ -18,6 +18,7 @@
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_mic_black_24dp.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_more_vert_black_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_notification_icon_24dp.xml" value="0.1235" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_person.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/drawable/ic_settings_black_24dp.xml" value="0.1" />
@@ -38,6 +39,8 @@
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/layout/item_note.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/layout/item_result.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/layout/item_todo.xml" value="0.1" />
+        <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/menu/course_menu.xml" value="0.1" />
+        <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/menu/todo_menu.xml" value="0.33" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/SAMSON/StudioProjects/SchoolNotes/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_alarm_on_black_24dp.xml" value="0.18697916666666667" />
