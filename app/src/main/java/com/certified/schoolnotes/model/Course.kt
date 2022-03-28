@@ -26,7 +26,7 @@ import com.certified.schoolnotes.util.colors
  * @param code     courseCode of the course
  * @param title      title of the course
  * @param unit      no of units for the course
- * @param mark     mark obtained for the course
+ * @param score     mark obtained for the course
  * @param grade     grade obtained for the course
  * @param gradePoint     grade point of the course
  * @param creditPoint     credit point of the course
@@ -45,15 +45,15 @@ data class Course(
 //    @ColumnInfo(name = "course_unit")
     val unit: Int = 0,
 //    @ColumnInfo(name = "course_mark")
-    val mark: Int = 0,
+    val score: Int = 0,
 //    @ColumnInfo(name = "course_grade_point")
     val gradePoint: Int = 0,
-//    @ColumnInfo(name = "course_credit_point")
-    val creditPoint: Int = gradePoint * unit,
     val color: Int = colors.random()
 ) {
+    //    @ColumnInfo(name = "course_credit_point")
+    val creditPoint: Int = gradePoint * unit
     //    @ColumnInfo(name = "course_grade")
-    val grade: String = when (mark) {
+    val grade: String = when (score) {
         in 0..44 -> "F"
         in 45..49 -> "D"
         in 50..59 -> "C"
