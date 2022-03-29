@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -51,132 +52,132 @@ fun TodoScreen() {
     var filterExpanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("All") }
 
-    Column(
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(color = colorResource(id = R.color.color_primary_accent))
+//    ) {
+
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.color_primary_accent))
     ) {
 
-        ConstraintLayout(
+        val (title, deleteIcon, deleteMenu, filterIcon, filterTextField, filterSurface, todoList, addButton) = createRefs()
+
+        Text(
+            text = "To-Dos",
+            fontSize = 20.sp,
+            fontFamily = SpaceGrotesk,
+            color = colorResource(id = R.color.black),
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .constrainAs(title) {
+                    top.linkTo(anchor = parent.top, margin = 20.dp)
+                    start.linkTo(anchor = parent.start)
+                    end.linkTo(anchor = parent.end)
+                }
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
+            contentDescription = "Delete icon",
+            modifier = Modifier
+                .clickable { expanded = true }
+                .constrainAs(deleteIcon) {
+                    top.linkTo(anchor = title.top)
+                    bottom.linkTo(anchor = title.bottom)
+                    end.linkTo(anchor = parent.end, margin = 20.dp)
+                }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.constrainAs(deleteMenu) {
+                top.linkTo(anchor = deleteIcon.bottom)
+                end.linkTo(anchor = deleteIcon.end)
+            }
+        ) {
+            DropdownMenuItem(onClick = {
+                showToast(context, "Deleted all to-dos")
+                expanded = false
+            }) {
+                Text("Delete all to-dos")
+            }
+            DropdownMenuItem(onClick = {
+                showToast(context, "Deleted all completed to-dos")
+                expanded = false
+            }) {
+                Text("Delete all completed to-dos")
+            }
+        }
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-//                .height(60.dp)
-        ) {
+                .height(60.dp)
+                .background(color = colorResource(id = R.color.color_primary_accent_2))
+                .constrainAs(filterSurface) {
+                    top.linkTo(anchor = deleteIcon.bottom, margin = 20.dp)
+                    start.linkTo(anchor = parent.start)
+                    end.linkTo(anchor = parent.end)
+                }
+        )
 
-            val (title, deleteIcon, deleteMenu, filterIcon, filterTextField, filterSurface) = createRefs()
-
+        TextButton(
+            onClick = { filterExpanded = !filterExpanded },
+            modifier = Modifier.constrainAs(filterTextField) {
+                top.linkTo(anchor = filterSurface.top)
+                bottom.linkTo(anchor = filterSurface.bottom)
+                end.linkTo(anchor = filterSurface.end, margin = 20.dp)
+            }) {
             Text(
-                text = "To-Dos",
-                fontSize = 20.sp,
+                text = text,
+                fontSize = 14.sp,
                 fontFamily = SpaceGrotesk,
-                color = colorResource(id = R.color.black_day_white_night),
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier
-                    .constrainAs(title) {
-                        top.linkTo(anchor = parent.top, margin = 20.dp)
-                        start.linkTo(anchor = parent.start)
-                        end.linkTo(anchor = parent.end)
-                    }
+                fontWeight = FontWeight.Medium,
+                color = colorResource(id = R.color.black),
+                modifier = Modifier.padding(end = 4.dp)
             )
-
-            Image(
-                painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
-                contentDescription = "Delete icon",
-                modifier = Modifier
-                    .clickable { expanded = true }
-                    .constrainAs(deleteIcon) {
-                        top.linkTo(anchor = title.top)
-                        bottom.linkTo(anchor = title.bottom)
-                        end.linkTo(anchor = parent.end, margin = 20.dp)
-                    }
+            Icon(
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = "Filter Button",
+                tint = colorResource(id = R.color.black)
             )
+        }
 
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.constrainAs(deleteMenu) {
-                    top.linkTo(anchor = deleteIcon.bottom)
-                    end.linkTo(anchor = deleteIcon.end)
-                }
-            ) {
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Deleted all to-dos")
-                    expanded = false
-                }) {
-                    Text("Delete all to-dos")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Deleted all completed to-dos")
-                    expanded = false
-                }) {
-                    Text("Delete all completed to-dos")
-                }
+        DropdownMenu(
+            expanded = filterExpanded,
+            onDismissRequest = { filterExpanded = false },
+            modifier = Modifier.constrainAs(deleteMenu) {
+                top.linkTo(anchor = deleteIcon.bottom)
+                end.linkTo(anchor = deleteIcon.end)
             }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(color = colorResource(id = R.color.color_primary_accent_2))
-                    .constrainAs(filterSurface) {
-                        top.linkTo(anchor = deleteIcon.bottom, margin = 20.dp)
-                        start.linkTo(anchor = parent.start)
-                        end.linkTo(anchor = parent.end)
-                    }
-            )
-
-            TextButton(
-                onClick = { filterExpanded = !filterExpanded },
-                modifier = Modifier.constrainAs(filterTextField) {
-                    top.linkTo(anchor = filterSurface.top)
-                    bottom.linkTo(anchor = filterSurface.bottom)
-                    end.linkTo(anchor = filterSurface.end, margin = 20.dp)
-                }) {
-                Text(
-                    text = text,
-                    fontSize = 14.sp,
-                    fontFamily = SpaceGrotesk,
-                    fontWeight = FontWeight.Medium,
-                    color = colorResource(id = R.color.black),
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "Filter Button",
-                    tint = colorResource(id = R.color.black)
-                )
+        ) {
+            DropdownMenuItem(onClick = {
+                showToast(context, "Showing all to-dos")
+                filterExpanded = false
+                text = "All"
+            }) {
+                Text("All")
             }
-
-            DropdownMenu(
-                expanded = filterExpanded,
-                onDismissRequest = { filterExpanded = false },
-                modifier = Modifier.constrainAs(deleteMenu) {
-                    top.linkTo(anchor = deleteIcon.bottom)
-                    end.linkTo(anchor = deleteIcon.end)
-                }
-            ) {
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing all to-dos")
-                    filterExpanded = false
-                    text = "All"
-                }) {
-                    Text("All")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing incomplete to-dos")
-                    filterExpanded = false
-                    text = "Incomplete"
-                }) {
-                    Text("Incomplete")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing completed to-dos")
-                    filterExpanded = false
-                    text = "Completed"
-                }) {
-                    Text("Completed")
-                }
+            DropdownMenuItem(onClick = {
+                showToast(context, "Showing incomplete to-dos")
+                filterExpanded = false
+                text = "Incomplete"
+            }) {
+                Text("Incomplete")
             }
+            DropdownMenuItem(onClick = {
+                showToast(context, "Showing completed to-dos")
+                filterExpanded = false
+                text = "Completed"
+            }) {
+                Text("Completed")
+            }
+        }
 //            OutlinedTextField(
 //                value = text,
 //                onValueChange = { text = it },
@@ -187,17 +188,16 @@ fun TodoScreen() {
 //                }
 //            )
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_sort_black_24dp),
-                contentDescription = "Filter Icon",
-                modifier = Modifier
-                    .constrainAs(filterIcon) {
-                        top.linkTo(anchor = filterSurface.top)
-                        bottom.linkTo(anchor = filterSurface.bottom)
-                        end.linkTo(anchor = filterTextField.start, margin = 16.dp)
-                    }
-            )
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_sort_black_24dp),
+            contentDescription = "Filter Icon",
+            modifier = Modifier
+                .constrainAs(filterIcon) {
+                    top.linkTo(anchor = filterSurface.top)
+                    bottom.linkTo(anchor = filterSurface.bottom)
+                    end.linkTo(anchor = filterTextField.start, margin = 16.dp)
+                }
+        )
 
         ListTodos(
             todos = listOf(
@@ -226,14 +226,35 @@ fun TodoScreen() {
                     todo = "Complete these mf designs",
                     isDone = false
                 )
-            )
+            ), modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(todoList) {
+                    top.linkTo(anchor = filterSurface.bottom)
+                    end.linkTo(anchor = parent.end)
+                    start.linkTo(anchor = parent.start)
+                }
         )
+
+        FloatingActionButton(
+            onClick = { showToast(context, "You'll be able to add to-dos soon") },
+            backgroundColor = colorResource(id = R.color.color_primary_dark),
+            modifier = Modifier.constrainAs(addButton) {
+                bottom.linkTo(parent.bottom, margin = 16.dp)
+                end.linkTo(anchor = parent.end, margin = 20.dp)
+            }) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = "Add to-do button",
+                tint = colorResource(id = R.color.black)
+            )
+        }
     }
 }
+//}
 
 @Composable
-fun ListTodos(todos: List<Todo>) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
+fun ListTodos(todos: List<Todo>, modifier: Modifier) {
+    LazyColumn(modifier = modifier) {
         items(items = todos, key = {
             it.id
         }) { it ->
