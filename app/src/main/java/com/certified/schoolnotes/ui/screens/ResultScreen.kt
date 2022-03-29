@@ -21,12 +21,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,9 +38,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.model.Course
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
+import com.certified.schoolnotes.util.Extensions.showToast
 
 @Composable
 fun ResultScreen() {
+
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +63,9 @@ fun ResultScreen() {
         )
 
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+
             val (courses, units, scores) = createRefs()
+
             Text(text = "Courses",
                 fontSize = 18.sp,
                 fontFamily = SpaceGrotesk,
@@ -65,6 +74,7 @@ fun ResultScreen() {
                     top.linkTo(anchor = parent.top, margin = 24.dp)
                     start.linkTo(anchor = parent.start, margin = 24.dp)
                 })
+
             Text(
                 text = "Units",
                 fontSize = 18.sp,
@@ -75,6 +85,7 @@ fun ResultScreen() {
                     start.linkTo(anchor = courses.end)
                     end.linkTo(anchor = scores.start)
                 })
+
             Text(
                 text = "Scores",
                 fontSize = 18.sp,
@@ -160,6 +171,7 @@ fun ResultScreen() {
         ConstraintLayout(
             modifier = Modifier.fillMaxWidth()
         ) {
+
             val (gsText, gsValue, tluText, tluValue, gpaText, gpaValue, btnCalc) = createRefs()
 
             Text(
@@ -216,15 +228,19 @@ fun ResultScreen() {
                     end.linkTo(anchor = parent.end, margin = 24.dp)
                 })
 
-            Button(onClick = { /*TODO*/ }, modifier = Modifier
-                .height(40.dp)
-                .defaultMinSize(minWidth = 300.dp)
+            Button(onClick = { showToast(context, "You'll be able to calculate GPA shortly") },
+                colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.color_primary_dark)),
+                shape = RoundedCornerShape(25.dp),
+                modifier = Modifier
+                    .height(40.dp)
+                    .defaultMinSize(minWidth = 300.dp)
 //                .background(color = colorResource(id = R.color.color_primary_dark))
-                .constrainAs(btnCalc) {
-                    top.linkTo(anchor = gpaText.bottom, margin = 24.dp)
-                    start.linkTo(anchor = parent.start, margin = 42.dp)
-                    end.linkTo(anchor = parent.end, margin = 42.dp)
-                }) {
+                    .constrainAs(btnCalc) {
+                        top.linkTo(anchor = gpaText.bottom, margin = 24.dp)
+                        start.linkTo(anchor = parent.start, margin = 42.dp)
+                        end.linkTo(anchor = parent.end, margin = 42.dp)
+                    }) {
+
                 Text(
                     text = "Calculate GPA",
                     fontSize = 16.sp,
@@ -266,7 +282,7 @@ fun CourseItem(course: Course) {
             text = course.code,
             fontSize = 16.sp,
             fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.color_primary_darker),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.Normal, modifier = Modifier.constrainAs(courseCode) {
                 top.linkTo(anchor = parent.top, margin = 8.dp)
                 bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
@@ -277,7 +293,7 @@ fun CourseItem(course: Course) {
             text = course.unit.toString(),
             fontSize = 16.sp,
             fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.color_primary_darker),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.Normal, modifier = Modifier.constrainAs(unit) {
                 top.linkTo(anchor = parent.top, margin = 8.dp)
                 bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
@@ -289,7 +305,7 @@ fun CourseItem(course: Course) {
             text = course.score.toString(),
             fontSize = 16.sp,
             fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.color_primary_darker),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.Normal,
             modifier = Modifier.constrainAs(score) {
                 top.linkTo(anchor = parent.top, margin = 8.dp)
@@ -301,7 +317,7 @@ fun CourseItem(course: Course) {
             text = course.grade,
             fontSize = 16.sp,
             fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.color_primary_darker),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.Normal, modifier = Modifier.constrainAs(grade) {
                 top.linkTo(anchor = parent.top, margin = 8.dp)
                 bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
