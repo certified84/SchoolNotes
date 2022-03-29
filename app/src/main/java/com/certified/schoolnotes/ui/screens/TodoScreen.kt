@@ -30,11 +30,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.model.Todo
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
@@ -159,56 +158,79 @@ fun ListTodos(todos: List<Todo>) {
 
 @Composable
 fun TodoItem(todo: Todo) {
-    Column(modifier = Modifier.background(color = colorResource(id = R.color.white))) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_todo_eclipse_10dp),
-                contentDescription = "Todo icon",
-                modifier = Modifier
-                    .padding(start = 32.dp, top = 4.dp)
-                    .align(Alignment.CenterVertically)
-            )
-            Text(
-                text = todo.todo,
-                fontSize = 14.sp,
-                fontFamily = SpaceGrotesk,
-                color = colorResource(id = R.color.black_day_white_night),
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier
-                    .padding(start = 32.dp, top = 4.dp)
-                    .align(alignment = Alignment.CenterVertically),
-                maxLines = 1
-            )
-            var isChecked by remember { mutableStateOf(todo.isDone) }
-            Checkbox(
-                checked = isChecked,
-                onCheckedChange = { isChecked = it },
-                modifier = Modifier
-                    .padding(top = 4.dp, end = 24.dp)
-                    .align(Alignment.CenterVertically)
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_notification_icon_24dp),
-                contentDescription = "Todo icon",
-                modifier = Modifier
-                    .padding(start = 24.dp)
-                    .align(Alignment.CenterVertically)
-                    .alpha(.7f)
-            )
-            Text(
-                text = if (todo.reminder == null) "No reminder set" else formatReminderDate(todo.reminder!!),
-                fontSize = 14.sp,
-                fontFamily = SpaceGrotesk,
-                color = colorResource(id = R.color.black_day_white_night),
-                fontWeight = FontWeight.Light,
-                modifier = Modifier
-                    .padding(start = 20.dp)
-                    .align(alignment = Alignment.CenterVertically)
-                    .alpha(.7f),
-                maxLines = 1
-            )
-        }
+
+    var isChecked by remember { mutableStateOf(todo.isDone) }
+
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = colorResource(id = R.color.white))
+            .clickable { isChecked = !isChecked }
+    ) {
+
+        val (todoIcon, todoTitle, notificationIcon, todoReminder, checkBox) = createRefs()
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_todo_eclipse_10dp),
+            contentDescription = "Todo icon",
+            modifier = Modifier
+                .constrainAs(todoIcon) {
+                    top.linkTo(anchor = parent.top, margin = 8.dp)
+                    start.linkTo(anchor = notificationIcon.start)
+                    end.linkTo(anchor = notificationIcon.end)
+                }
+        )
+
+        Text(
+            text = todo.todo,
+            fontSize = 14.sp,
+            fontFamily = SpaceGrotesk,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            modifier = Modifier
+                .constrainAs(todoTitle) {
+                    start.linkTo(anchor = notificationIcon.end, margin = 20.dp)
+                    top.linkTo(anchor = parent.top, margin = 4.dp)
+//                    end.linkTo(anchor = checkBox.start, margin = 4.dp)
+                }
+        )
+
+        Checkbox(
+            checked = isChecked,
+            onCheckedChange = { isChecked = it },
+            modifier = Modifier
+                .constrainAs(checkBox) {
+                    top.linkTo(anchor = parent.top, margin = 4.dp)
+                    bottom.linkTo(anchor = parent.bottom, margin = 4.dp)
+                    end.linkTo(anchor = parent.end, margin = 24.dp)
+                }
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_notification_icon_24dp),
+            contentDescription = "Notification icon",
+            modifier = Modifier
+                .alpha(.5f)
+                .constrainAs(notificationIcon) {
+                    top.linkTo(anchor = todoIcon.bottom, margin = 8.dp)
+                    start.linkTo(anchor = parent.start, margin = 20.dp)
+                    bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
+                }
+        )
+
+        Text(
+            text = if (todo.reminder == null) "No reminder set" else formatReminderDate(todo.reminder!!),
+            fontSize = 14.sp,
+            fontFamily = SpaceGrotesk,
+            fontWeight = FontWeight.Light,
+            maxLines = 1,
+            modifier = Modifier
+                .alpha(.7f)
+                .constrainAs(todoReminder) {
+                    top.linkTo(anchor = notificationIcon.top)
+                    bottom.linkTo(anchor = notificationIcon.bottom)
+                    start.linkTo(anchor = notificationIcon.end, margin = 20.dp)
+                }
+        )
     }
 }
