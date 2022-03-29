@@ -42,7 +42,6 @@ import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 import com.certified.schoolnotes.util.Extensions.showToast
 import com.certified.schoolnotes.util.formatReminderDate
 
-//@Preview(showBackground = true)
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TodoScreen() {
@@ -51,12 +50,6 @@ fun TodoScreen() {
     var expanded by remember { mutableStateOf(false) }
     var filterExpanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("All") }
-
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(color = colorResource(id = R.color.color_primary_accent))
-//    ) {
 
     ConstraintLayout(
         modifier = Modifier
@@ -250,7 +243,6 @@ fun TodoScreen() {
         }
     }
 }
-//}
 
 @Composable
 fun ListTodos(todos: List<Todo>, modifier: Modifier) {
