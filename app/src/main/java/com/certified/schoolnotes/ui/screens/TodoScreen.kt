@@ -247,10 +247,10 @@ fun TodoScreen() {
 @Composable
 fun ListTodos(todos: List<Todo>, modifier: Modifier) {
     LazyColumn(modifier = modifier) {
-        items(items = todos, key = {
-            it.id
-        }) { it ->
-            TodoItem(todo = it)
+        items(items = todos, key = { todo ->
+            todo.id
+        }) { todo ->
+            TodoItem(todo = todo)
         }
     }
 }

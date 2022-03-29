@@ -20,10 +20,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
@@ -34,11 +31,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -52,8 +50,6 @@ fun NotesScreen() {
 
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
-    var filterExpanded by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("All") }
 
     ConstraintLayout(
         modifier = Modifier
@@ -61,7 +57,7 @@ fun NotesScreen() {
             .background(color = colorResource(id = R.color.color_primary_accent))
     ) {
 
-        val (title, deleteIcon, deleteMenu, filterIcon, filterTextField, filterSurface, todoList, addButton) = createRefs()
+        val (title, deleteIcon, deleteMenu, todoList, addButton) = createRefs()
 
         Text(
             text = "Your Notes",
@@ -109,38 +105,33 @@ fun NotesScreen() {
             Note(
                 id = 0,
                 courseCode = "MTS 415",
-                "Engineering Maths III - Lecture 1",
-                "Lorem Ipsum and shit afoejiofa afoiejfiaweo",
+                title = "Engineering Maths III - Lecture 1",
             ),
             Note(
                 id = 0,
                 courseCode = "MTS 415",
-                "Engineering Maths III - Lecture 1",
-                "Lorem Ipsum and shit afoejiofa afoiejfiaweo",
+                title = "Engineering Maths III - Lecture 1",
             ),
             Note(
                 id = 0,
                 courseCode = "MTS 415",
-                "Engineering Maths III - Lecture 1",
-                "Lorem Ipsum and shit afoejiofa afoiejfiaweo",
+                title = "Engineering Maths III - Lecture 1",
             ),
             Note(
                 id = 0,
                 courseCode = "MTS 415",
-                "Engineering Maths III - Lecture 1",
-                "Lorem Ipsum and shit afoejiofa afoiejfiaweo",
+                title = "Engineering Maths III - Lecture 1",
             ),
             Note(
                 id = 0,
                 courseCode = "MTS 415",
-                "Engineering Maths III - Lecture 1",
-                "Lorem Ipsum and shit afoejiofa afoiejfiaweo",
-            ),
+                title = "Engineering Maths III - Lecture 1",
+            )
         ), modifier = Modifier
             .constrainAs(todoList) {
                 top.linkTo(anchor = deleteIcon.bottom, margin = 16.dp)
-                end.linkTo(anchor = parent.end, 20.dp)
-                start.linkTo(anchor = parent.start, 20.dp)
+                end.linkTo(anchor = parent.end, margin = 20.dp)
+                start.linkTo(anchor = parent.start, margin = 20.dp)
             })
 
         FloatingActionButton(
@@ -167,8 +158,8 @@ fun ListNotes(notes: List<Note>, modifier: Modifier) {
         contentPadding = PaddingValues(8.dp),
         modifier = modifier
     ) {
-        items(notes) { it ->
-            NoteItem(note = it)
+        items(notes) { note ->
+            NoteItem(note = note)
         }
     }
 }
@@ -187,9 +178,10 @@ fun NoteItem(note: Note) {
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-//                    .alpha(.3f)
-                    .background(color = colorResource(id = R.color.black))
+                    .height(170.dp)
+                    .fillMaxWidth()
+                    .alpha(.3f)
+                    .background(color = colorResource(id = R.color.color_primary))
                     .constrainAs(background) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
@@ -200,6 +192,7 @@ fun NoteItem(note: Note) {
 
             Image(
                 painter = painterResource(id = R.drawable.ic_note_black_24dp),
+                colorFilter = ColorFilter.tint(color = colorResource(id = R.color.black)),
                 contentDescription = "note icon",
                 modifier = Modifier.constrainAs(noteIcon) {
                     top.linkTo(anchor = parent.top, margin = 20.dp)
@@ -214,6 +207,7 @@ fun NoteItem(note: Note) {
                 color = colorResource(id = R.color.black),
                 fontFamily = SpaceGrotesk,
                 fontWeight = FontWeight.Medium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.constrainAs(noteTitle) {
                     top.linkTo(noteIcon.bottom)
                     bottom.linkTo(anchor = parent.bottom, margin = 20.dp)
