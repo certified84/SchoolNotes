@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -181,7 +182,7 @@ fun NoteItem(note: Note) {
                     .height(170.dp)
                     .fillMaxWidth()
                     .alpha(.3f)
-                    .background(color = colorResource(id = R.color.color_primary))
+                    .background(color = Color(note.color))
                     .constrainAs(background) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
@@ -192,7 +193,7 @@ fun NoteItem(note: Note) {
 
             Image(
                 painter = painterResource(id = R.drawable.ic_note_black_24dp),
-                colorFilter = ColorFilter.tint(color = colorResource(id = R.color.black)),
+                colorFilter = ColorFilter.tint(color = Color(note.color)),
                 contentDescription = "note icon",
                 modifier = Modifier.constrainAs(noteIcon) {
                     top.linkTo(anchor = parent.top, margin = 20.dp)
