@@ -23,8 +23,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
@@ -44,73 +45,158 @@ import com.certified.schoolnotes.util.formatReminderDate
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TodoScreen() {
+
     val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var filterExpanded by remember { mutableStateOf(false) }
+    var text by remember { mutableStateOf("All") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorResource(id = R.color.color_primary_accent))
     ) {
 
-        Text(
-            text = "To-Dos",
-            fontSize = 20.sp,
-            fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.black_day_white_night),
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally)
-                .padding(top = 16.dp)
-        )
-
-        Surface(
-            color = colorResource(id = R.color.color_primary),
+        ConstraintLayout(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
-                .padding(top = 8.dp)
+//                .height(60.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_sort_black_24dp),
-                    contentDescription = "Filter Icon",
-                    modifier = Modifier
-                        .padding(start = 24.dp)
-                        .align(Alignment.CenterVertically)
-                )
-                var text by remember { mutableStateOf("All") }
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-                var expanded by remember { mutableStateOf(false) }
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-//                    modifier = Modifier.align(Alignment.End)
-                ) {
-                    DropdownMenuItem(onClick = {
-                        showToast(context, "Deleted all to-dos")
-                        expanded = false
-                    }) {
-                        Text("Delete all to-dos")
+
+            val (title, deleteIcon, deleteMenu, filterIcon, filterTextField, filterSurface) = createRefs()
+
+            Text(
+                text = "To-Dos",
+                fontSize = 20.sp,
+                fontFamily = SpaceGrotesk,
+                color = colorResource(id = R.color.black_day_white_night),
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier
+                    .constrainAs(title) {
+                        top.linkTo(anchor = parent.top, margin = 20.dp)
+                        start.linkTo(anchor = parent.start)
+                        end.linkTo(anchor = parent.end)
                     }
-                    DropdownMenuItem(onClick = {
-                        showToast(context, "Deleted all completed to-dos")
-                        expanded = false
-                    }) {
-                        Text("Delete all completed to-dos")
+            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
+                contentDescription = "Delete icon",
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .constrainAs(deleteIcon) {
+                        top.linkTo(anchor = title.top)
+                        bottom.linkTo(anchor = title.bottom)
+                        end.linkTo(anchor = parent.end, margin = 20.dp)
                     }
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier.constrainAs(deleteMenu) {
+                    top.linkTo(anchor = deleteIcon.bottom)
+                    end.linkTo(anchor = deleteIcon.end)
                 }
-                Image(
-                    painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
-                    contentDescription = "Delete icon",
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(end = 24.dp)
-                        .clickable { expanded = true }
+            ) {
+                DropdownMenuItem(onClick = {
+                    showToast(context, "Deleted all to-dos")
+                    expanded = false
+                }) {
+                    Text("Delete all to-dos")
+                }
+                DropdownMenuItem(onClick = {
+                    showToast(context, "Deleted all completed to-dos")
+                    expanded = false
+                }) {
+                    Text("Delete all completed to-dos")
+                }
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .background(color = colorResource(id = R.color.color_primary_accent_2))
+                    .constrainAs(filterSurface) {
+                        top.linkTo(anchor = deleteIcon.bottom, margin = 20.dp)
+                        start.linkTo(anchor = parent.start)
+                        end.linkTo(anchor = parent.end)
+                    }
+            )
+
+            TextButton(
+                onClick = { filterExpanded = !filterExpanded },
+                modifier = Modifier.constrainAs(filterTextField) {
+                    top.linkTo(anchor = filterSurface.top)
+                    bottom.linkTo(anchor = filterSurface.bottom)
+                    end.linkTo(anchor = filterSurface.end, margin = 20.dp)
+                }) {
+                Text(
+                    text = text,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGrotesk,
+                    fontWeight = FontWeight.Medium,
+                    color = colorResource(id = R.color.black),
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+                Icon(
+                    imageVector = Icons.Default.ArrowDropDown,
+                    contentDescription = "Filter Button",
+                    tint = colorResource(id = R.color.black)
                 )
             }
+
+            DropdownMenu(
+                expanded = filterExpanded,
+                onDismissRequest = { filterExpanded = false },
+                modifier = Modifier.constrainAs(deleteMenu) {
+                    top.linkTo(anchor = deleteIcon.bottom)
+                    end.linkTo(anchor = deleteIcon.end)
+                }
+            ) {
+                DropdownMenuItem(onClick = {
+                    showToast(context, "Showing all to-dos")
+                    filterExpanded = false
+                    text = "All"
+                }) {
+                    Text("All")
+                }
+                DropdownMenuItem(onClick = {
+                    showToast(context, "Showing incomplete to-dos")
+                    filterExpanded = false
+                    text = "Incomplete"
+                }) {
+                    Text("Incomplete")
+                }
+                DropdownMenuItem(onClick = {
+                    showToast(context, "Showing completed to-dos")
+                    filterExpanded = false
+                    text = "Completed"
+                }) {
+                    Text("Completed")
+                }
+            }
+//            OutlinedTextField(
+//                value = text,
+//                onValueChange = { text = it },
+//                modifier = Modifier.constrainAs(filterTextField) {
+//                    top.linkTo(anchor = filterSurface.top)
+//                    bottom.linkTo(anchor = filterSurface.bottom)
+//                    end.linkTo(anchor = filterSurface.end, margin = 20.dp)
+//                }
+//            )
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_sort_black_24dp),
+                contentDescription = "Filter Icon",
+                modifier = Modifier
+                    .constrainAs(filterIcon) {
+                        top.linkTo(anchor = filterSurface.top)
+                        bottom.linkTo(anchor = filterSurface.bottom)
+                        end.linkTo(anchor = filterTextField.start, margin = 16.dp)
+                    }
+            )
         }
 
         ListTodos(

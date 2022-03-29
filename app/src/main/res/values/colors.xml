@@ -28,6 +28,7 @@
     <color name="color_primary_dark">#FFD29DAC</color>
     <color name="color_primary_darker">#FF986977</color>
     <color name="color_primary_accent">#FFFFECF1</color>
+    <color name="color_primary_accent_2">#FFD8E4</color>
     <color name="black_day_white_night">@color/black</color>
     <color name="white_day_black_night">@color/white</color>
     <color name="search_bar_color">#E1E1E1</color>
