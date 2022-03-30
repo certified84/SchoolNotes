@@ -263,13 +263,13 @@ fun ListCourses(courses: List<Course>) {
         items(items = courses, key = {
             it.id
         }) { it ->
-            CourseItem(course = it)
+            ResultItem(course = it)
         }
     }
 }
 
 @Composable
-fun CourseItem(course: Course) {
+fun ResultItem(course: Course) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()

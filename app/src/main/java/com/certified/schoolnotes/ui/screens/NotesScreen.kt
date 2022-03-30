@@ -192,7 +192,7 @@ fun NoteItem(note: Note) {
             )
 
             Image(
-                painter = painterResource(id = R.drawable.ic_note_black_24dp),
+                painter = painterResource(id = R.drawable.ic_note_black_80dp),
                 colorFilter = ColorFilter.tint(color = Color(note.color)),
                 contentDescription = "note icon",
                 modifier = Modifier.constrainAs(noteIcon) {

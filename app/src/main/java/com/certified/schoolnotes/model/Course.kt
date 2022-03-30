@@ -48,7 +48,8 @@ data class Course(
     val score: Int = 0,
 //    @ColumnInfo(name = "course_grade_point")
     val gradePoint: Int = 0,
-    val color: Int = colors.random()
+    val color: Int = colors.random(),
+    val noOfNotes: Int = 0
 ) {
     //    @ColumnInfo(name = "course_credit_point")
     val creditPoint: Int = gradePoint * unit
