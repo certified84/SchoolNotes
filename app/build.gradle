@@ -92,6 +92,9 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 //    Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
+
+//    Coil-compose
+    implementation("io.coil-kt:coil-compose:2.0.0-rc02")
 }
