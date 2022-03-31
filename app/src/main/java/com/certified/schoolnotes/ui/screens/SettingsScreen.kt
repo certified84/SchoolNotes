@@ -22,9 +22,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -139,11 +140,12 @@ fun SettingsScreen(user: User) {
             )
         }
 
+        var isChecked by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 24.dp)
                 .fillMaxWidth()
-                .clickable { }
+                .clickable { isChecked = !isChecked }
         ) {
 
             Icon(
@@ -163,8 +165,12 @@ fun SettingsScreen(user: User) {
                     .align(Alignment.CenterVertically)
             )
 
-//            var isCheck = remembersta
-//            Checkbox(checked = , onCheckedChange = )
+            Checkbox(
+                checked = isChecked,
+                onCheckedChange = { isChecked = !isChecked },
+                modifier = Modifier.align(Alignment.CenterVertically),
+                colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.color_primary_dark))
+            )
         }
 
         Row(
@@ -190,6 +196,16 @@ fun SettingsScreen(user: User) {
                     .padding(start = 12.dp)
                     .align(Alignment.CenterVertically)
             )
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_right_24dp),
+                contentDescription = "right arrow",
+                tint = colorResource(id = R.color.black),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .alpha(.5f)
+            )
         }
 
         Row(
@@ -200,7 +216,7 @@ fun SettingsScreen(user: User) {
         ) {
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_notification_icon_16dp),
+                painter = painterResource(id = R.drawable.ic_support_24dp),
                 contentDescription = "Support icon",
                 tint = colorResource(id = R.color.black),
                 modifier = Modifier.align(Alignment.CenterVertically)
@@ -214,6 +230,16 @@ fun SettingsScreen(user: User) {
                 modifier = Modifier
                     .padding(start = 12.dp)
                     .align(Alignment.CenterVertically)
+            )
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_right_24dp),
+                contentDescription = "right arrow",
+                tint = colorResource(id = R.color.black),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .alpha(.5f)
             )
         }
 
