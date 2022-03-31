@@ -35,4 +35,5 @@
     <color name="fragment_background">#FFECF1</color>
     <color name="results">#986977</color>
     <color name="button_color">#EFB8C8</color>
+    <color name="red">#ED1B35</color>
 </resources>

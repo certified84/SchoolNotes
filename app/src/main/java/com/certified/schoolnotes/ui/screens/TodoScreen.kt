@@ -306,7 +306,7 @@ fun TodoItem(todo: Todo) {
         )
 
         Image(
-            painter = painterResource(id = R.drawable.ic_notification_icon_24dp),
+            painter = painterResource(id = R.drawable.ic_notification_icon_16dp),
             contentDescription = "Notification icon",
             modifier = Modifier
                 .alpha(.5f)

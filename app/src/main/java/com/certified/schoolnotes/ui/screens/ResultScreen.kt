@@ -234,7 +234,6 @@ fun ResultScreen() {
                 modifier = Modifier
                     .height(40.dp)
                     .defaultMinSize(minWidth = 300.dp)
-//                .background(color = colorResource(id = R.color.color_primary_dark))
                     .constrainAs(btnCalc) {
                         top.linkTo(anchor = gpaText.bottom, margin = 24.dp)
                         start.linkTo(anchor = parent.start, margin = 42.dp)
