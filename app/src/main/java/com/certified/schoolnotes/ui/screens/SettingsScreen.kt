@@ -16,6 +16,8 @@
 
 package com.certified.schoolnotes.ui.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,6 +42,7 @@ import coil.request.ImageRequest
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.model.User
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
+import com.certified.schoolnotes.util.Extensions.openBrowser
 import com.certified.schoolnotes.util.Extensions.showToast
 
 @Composable
@@ -177,7 +180,9 @@ fun SettingsScreen(user: User) {
             modifier = Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 24.dp)
                 .fillMaxWidth()
-                .clickable { }
+                .clickable {
+                    context.openBrowser("https://github.com/certified84/SchoolNotes/tree/compose-branch")
+                }
         ) {
 
             Icon(
@@ -212,7 +217,11 @@ fun SettingsScreen(user: User) {
             modifier = Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 24.dp)
                 .fillMaxWidth()
-                .clickable { }
+                .clickable {
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.data = Uri.parse("mailto:Sammie_kt@pm.me?subject=Feedback")
+                    context.startActivity(intent)
+                }
         ) {
 
             Icon(
