@@ -1,12 +1,12 @@
 package com.certified.schoolnotes.ui
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -17,7 +17,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
-import com.certified.schoolnotes.ui.screens.*
+import com.certified.schoolnotes.R
+import com.certified.schoolnotes.model.User
+import com.certified.schoolnotes.ui.screens.SettingsScreen
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
 
 //@OptIn(ExperimentalMaterialApi::class)
@@ -38,7 +40,15 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    SplashScreen()
+                    SettingsScreen(
+                        User(
+                            id = "",
+                            name = "Samson Achiaga",
+//                            profileImage = BitmapFactory.decodeResource(
+//                                resources, R.drawable.avatar
+//                            )
+                        )
+                    )
                 }
             }
         }
