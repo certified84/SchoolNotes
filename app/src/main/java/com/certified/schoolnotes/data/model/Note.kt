@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes.model
+package com.certified.schoolnotes.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.certified.schoolnotes.util.colors
 
 /**
@@ -32,17 +35,17 @@ import com.certified.schoolnotes.util.colors
  *
  */
 
-//@Entity(tableName = "note_table")
+@Entity(tableName = "note_table")
 data class Note(
-//    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-//    @ColumnInfo(name = "course_code")
+    @ColumnInfo(name = "course_code")
     val courseCode: String = "NIL",
-//    @ColumnInfo(name = "note_title")
+    @ColumnInfo(name = "note_title")
     val title: String = "",
-//    @ColumnInfo(name = "note_content")
+    @ColumnInfo(name = "note_content")
     val content: String = "",
-//    @ColumnInfo(name = "note_color")
+    @ColumnInfo(name = "note_color")
     var color: Int = colors.random(),
     var date: Long? = null
 )

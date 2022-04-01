@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes.model
+package com.certified.schoolnotes.data.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.certified.schoolnotes.util.colors
 
 /**
@@ -26,7 +29,7 @@ import com.certified.schoolnotes.util.colors
  * @param code     courseCode of the course
  * @param title      title of the course
  * @param unit      no of units for the course
- * @param score     mark obtained for the course
+ * @param mark     mark obtained for the course
  * @param grade     grade obtained for the course
  * @param gradePoint     grade point of the course
  * @param creditPoint     credit point of the course
@@ -34,27 +37,26 @@ import com.certified.schoolnotes.util.colors
  *
  */
 
-//@Entity(tableName = "course_table")
+@Entity(tableName = "course_table")
 data class Course(
-//    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-//    @ColumnInfo(name = "course_code")
+    @ColumnInfo(name = "course_code")
     val code: String = "",
-//    @ColumnInfo(name = "course_title")
+    @ColumnInfo(name = "course_title")
     val title: String = "",
-//    @ColumnInfo(name = "course_unit")
+    @ColumnInfo(name = "course_unit")
     val unit: Int = 0,
-//    @ColumnInfo(name = "course_mark")
-    val score: Int = 0,
-//    @ColumnInfo(name = "course_grade_point")
+    @ColumnInfo(name = "course_mark")
+    val mark: Int = 0,
+    @ColumnInfo(name = "course_grade_point")
     val gradePoint: Int = 0,
-    val color: Int = colors.random(),
-    val noOfNotes: Int = 0
+    @ColumnInfo(name = "course_credit_point")
+    val creditPoint: Int = gradePoint * unit,
+    val color: Int = colors.random()
 ) {
-    //    @ColumnInfo(name = "course_credit_point")
-    val creditPoint: Int = gradePoint * unit
-    //    @ColumnInfo(name = "course_grade")
-    val grade: String = when (score) {
+        @ColumnInfo(name = "course_grade")
+    val grade: String = when (mark) {
         in 0..44 -> "F"
         in 45..49 -> "D"
         in 50..59 -> "C"
