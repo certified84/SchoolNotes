@@ -55,7 +55,7 @@ fun ResultScreen() {
             text = "GPA Calculator",
             fontSize = 20.sp,
             fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.black_day_white_night),
+            color = colorResource(id = R.color.black),
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally)
