@@ -41,7 +41,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.certified.schoolnotes.R
-import com.certified.schoolnotes.model.User
+import com.certified.schoolnotes.data.model.User
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 import com.certified.schoolnotes.util.Extensions.openBrowser
 import com.certified.schoolnotes.util.Extensions.showToast

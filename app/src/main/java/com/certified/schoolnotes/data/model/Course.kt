@@ -55,8 +55,8 @@ data class Course(
     val creditPoint: Int = gradePoint * unit,
     val color: Int = colors.random()
 ) {
-        @ColumnInfo(name = "course_grade")
-    val grade: String = when (mark) {
+    @ColumnInfo(name = "course_grade")
+    var grade: String = when (mark) {
         in 0..44 -> "F"
         in 45..49 -> "D"
         in 50..59 -> "C"
