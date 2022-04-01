@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.certified.schoolnotes.R
-import com.certified.schoolnotes.model.Course
+import com.certified.schoolnotes.data.model.Course
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 import com.certified.schoolnotes.util.Extensions.showToast
 
