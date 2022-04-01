@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.model.User
+import com.certified.schoolnotes.ui.screens.MainScreen
 import com.certified.schoolnotes.ui.screens.SettingsScreen
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
 
@@ -40,15 +41,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    SettingsScreen(
-                        User(
-                            id = "",
-                            name = "Samson Achiaga",
-//                            profileImage = BitmapFactory.decodeResource(
-//                                resources, R.drawable.avatar
-//                            )
-                        )
-                    )
+                    MainScreen()
                 }
             }
         }
