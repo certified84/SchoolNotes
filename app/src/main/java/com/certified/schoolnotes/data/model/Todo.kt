@@ -16,6 +16,9 @@
 
 package com.certified.schoolnotes.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 /**
  * NoteEntry class represent the domain model i.e the
  * object visible to the app user.
@@ -28,9 +31,9 @@ package com.certified.schoolnotes.data.model
  *
  */
 
-//@Entity(tableName = "todo_table")
+@Entity(tableName = "todo_table")
 data class Todo(
-//    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     val todo: String = "",
     val isDone: Boolean = false,
