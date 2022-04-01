@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2021 Samson Achiaga
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Theme.SchoolNotes" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/color_primary</item>
@@ -28,7 +28,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_primary_dark</item>
         <!-- Navigation bar color. -->
-        <!--        <item name="android:navigationBarColor" tools:targetApi="l">@color/color_primary_accent</item>-->
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/color_primary_accent
+        </item>
+        <item name="android:windowLightNavigationBar">true</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
