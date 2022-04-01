@@ -16,11 +16,6 @@
 
 package com.certified.schoolnotes.ui.screens
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import com.certified.schoolnotes.R
 
 sealed class BottomBarScreen(

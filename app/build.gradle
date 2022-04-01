@@ -50,6 +50,7 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+        compose true
     }
 }
 
@@ -83,8 +84,8 @@ dependencies {
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 //    Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0'
 
 //    Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
