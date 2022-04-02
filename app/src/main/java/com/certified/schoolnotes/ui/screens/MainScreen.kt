@@ -32,10 +32,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.certified.schoolnotes.R
 import com.certified.schoolnotes.ui.BottomNavGraph
-import com.certified.schoolnotes.ui.screens.todo.TodoViewModel
+import com.certified.schoolnotes.ui.SchoolNotesViewModel
 
 @Composable
-fun MainScreen(viewModel: TodoViewModel) {
+fun MainScreen(viewModel: SchoolNotesViewModel) {
     val navController = rememberNavController()
     Scaffold(bottomBar = {
         BottomBar(navController = navController)

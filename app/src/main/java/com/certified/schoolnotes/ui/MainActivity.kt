@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.activity.viewModels
 import com.certified.schoolnotes.ui.screens.MainScreen
-import com.certified.schoolnotes.ui.screens.todo.TodoViewModel
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: TodoViewModel by viewModels()
+    private val viewModel: SchoolNotesViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

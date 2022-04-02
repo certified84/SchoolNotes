@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.certified.schoolnotes.ui.screens.todo
+package com.certified.schoolnotes.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +29,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TodoViewModel @Inject constructor(private val repository: SchoolNotesRepository) :
+class SchoolNotesViewModel @Inject constructor(private val repository: SchoolNotesRepository) :
     ViewModel() {
 
     private val _todos by mutableStateOf(MutableLiveData<List<Todo>?>())
