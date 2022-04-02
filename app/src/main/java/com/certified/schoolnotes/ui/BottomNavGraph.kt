@@ -22,15 +22,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.certified.schoolnotes.data.model.User
 import com.certified.schoolnotes.ui.screens.*
+import com.certified.schoolnotes.ui.screens.todo.TodoScreen
+import com.certified.schoolnotes.ui.screens.todo.TodoViewModel
 
 @Composable
-fun BottomNavGraph(navController: NavHostController) {
+fun BottomNavGraph(navController: NavHostController, viewModel: TodoViewModel) {
     NavHost(navController = navController, startDestination = BottomBarScreen.Home.route) {
         composable(route = BottomBarScreen.Home.route) {
             HomeScreen()
         }
         composable(route = BottomBarScreen.Todo.route) {
-            TodoScreen()
+            TodoScreen(viewModel)
         }
         composable(route = BottomBarScreen.Result.route) {
             ResultScreen()

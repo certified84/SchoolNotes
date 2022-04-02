@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -15,19 +16,21 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
+import androidx.activity.viewModels
 import com.certified.schoolnotes.ui.screens.MainScreen
+import com.certified.schoolnotes.ui.screens.todo.TodoViewModel
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-//@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: TodoViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContent {
-
-            val navController = rememberNavController()
 
             SchoolNotesTheme(
                 darkTheme = false
@@ -37,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen()
+                    MainScreen(viewModel)
                 }
             }
         }
