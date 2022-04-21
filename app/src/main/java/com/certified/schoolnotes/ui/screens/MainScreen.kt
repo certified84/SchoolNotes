@@ -18,6 +18,7 @@ package com.certified.schoolnotes.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -83,6 +84,6 @@ fun RowScope.AddItem(
                 tint = colorResource(id = R.color.black)
             )
         },
-        modifier = Modifier.background(color = colorResource(id = R.color.color_primary_accent))
+        modifier = Modifier.background(color = colorResource(id = R.color.color_primary_accent)).height(60.dp)
     )
 }

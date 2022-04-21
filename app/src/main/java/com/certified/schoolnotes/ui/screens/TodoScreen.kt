@@ -22,12 +22,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +45,7 @@ import com.certified.schoolnotes.ui.SchoolNotesViewModel
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 import com.certified.schoolnotes.util.Extensions.showToast
 import com.certified.schoolnotes.util.formatReminderDate
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -53,201 +56,326 @@ fun TodoScreen(viewModel: SchoolNotesViewModel) {
     var expanded by remember { mutableStateOf(false) }
     var filterExpanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("All") }
+    val coroutineScope = rememberCoroutineScope()
+    var bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    )
+    var todo by remember { mutableStateOf(Todo()) }
 
     val todos = viewModel.todos.observeAsState(listOf()).value
     var visibile by remember { mutableStateOf(true) }
     visibile = !todos.isNullOrEmpty()
 
-    ConstraintLayout(
+    BottomSheetScaffold(
+        backgroundColor = colorResource(R.color.color_primary_accent),
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = { TodoDialogContent(todo = todo) },
+        sheetPeekHeight = 0.dp,
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = R.color.color_primary_accent))
+//            .background(color = colorResource(id = R.color.color_primary_accent))
+            .padding(bottom = 58.dp)
     ) {
 
-        val (title, deleteIcon, emptyText, emptyTextAuthor, deleteMenu, filterIcon, filterTextField, filterSurface, todoList, addButton) = createRefs()
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
 
-        Text(
-            text = "To-Dos",
-            fontSize = 20.sp,
-            fontFamily = SpaceGrotesk,
-            color = colorResource(id = R.color.black),
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(anchor = parent.top, margin = 20.dp)
-                    start.linkTo(anchor = parent.start)
-                    end.linkTo(anchor = parent.end)
-                }
-        )
-
-        if (!visibile) {
-            Text(
-                text = "\"You may delay, but time will not.\"",
-                fontSize = 20.sp,
-                fontFamily = SpaceGrotesk,
-                color = colorResource(id = R.color.black),
-                fontWeight = FontWeight.Light,
-                modifier = Modifier
-                    .constrainAs(emptyText) {
-                        top.linkTo(anchor = parent.top)
-                        bottom.linkTo(anchor = parent.bottom, 8.dp)
-                        start.linkTo(anchor = parent.start, margin = 20.dp)
-                        end.linkTo(anchor = parent.end, margin = 20.dp)
-
-                    }
-            )
+            val (title, deleteIcon, emptyText, emptyTextAuthor, deleteMenu, filterIcon, filterTextField, filterSurface, todoList, addButton) = createRefs()
 
             Text(
-                text = "- Benjamin Franklin",
+                text = "To-Dos",
                 fontSize = 20.sp,
                 fontFamily = SpaceGrotesk,
                 color = colorResource(id = R.color.black),
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier
-                    .constrainAs(emptyTextAuthor) {
-                        top.linkTo(anchor = emptyText.bottom)
-//                        bottom.linkTo(anchor = parent.bottom)
-                        start.linkTo(anchor = parent.start, margin = 20.dp)
-                        end.linkTo(anchor = parent.end, margin = 20.dp)
-//                        centerAround(anchor = emptyText.bottom)
-                    }
-            )
-        }
-
-        if (visibile) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
-                contentDescription = "Delete icon",
-                modifier = Modifier
-                    .clickable { expanded = true }
-                    .constrainAs(deleteIcon) {
-                        top.linkTo(anchor = title.top)
-                        bottom.linkTo(anchor = title.bottom)
-                        end.linkTo(anchor = parent.end, margin = 20.dp)
-                    }
-            )
-
-            DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
-                modifier = Modifier.constrainAs(deleteMenu) {
-                    top.linkTo(anchor = deleteIcon.bottom)
-                    end.linkTo(anchor = deleteIcon.end)
-                }
-            ) {
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Deleted all to-dos")
-                    expanded = false
-                }) {
-                    Text("Delete all to-dos")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Deleted all completed to-dos")
-                    expanded = false
-                }) {
-                    Text("Delete all completed to-dos")
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .background(color = colorResource(id = R.color.color_primary_accent_2))
-                    .constrainAs(filterSurface) {
-                        top.linkTo(anchor = deleteIcon.bottom, margin = 20.dp)
+                    .constrainAs(title) {
+                        top.linkTo(anchor = parent.top, margin = 20.dp)
                         start.linkTo(anchor = parent.start)
                         end.linkTo(anchor = parent.end)
                     }
             )
 
-            TextButton(
-                onClick = { filterExpanded = !filterExpanded },
-                modifier = Modifier.constrainAs(filterTextField) {
-                    top.linkTo(anchor = filterSurface.top)
-                    bottom.linkTo(anchor = filterSurface.bottom)
-                    end.linkTo(anchor = filterSurface.end, margin = 20.dp)
-                }) {
+            if (!visibile) {
                 Text(
-                    text = text,
-                    fontSize = 14.sp,
+                    text = "\"You may delay, but time will not.\"",
+                    fontSize = 20.sp,
                     fontFamily = SpaceGrotesk,
-                    fontWeight = FontWeight.Medium,
                     color = colorResource(id = R.color.black),
-                    modifier = Modifier.padding(end = 4.dp)
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier
+                        .constrainAs(emptyText) {
+                            top.linkTo(anchor = parent.top)
+                            bottom.linkTo(anchor = parent.bottom, 8.dp)
+                            start.linkTo(anchor = parent.start, margin = 20.dp)
+                            end.linkTo(anchor = parent.end, margin = 20.dp)
+
+                        }
                 )
+
+                Text(
+                    text = "- Benjamin Franklin",
+                    fontSize = 20.sp,
+                    fontFamily = SpaceGrotesk,
+                    color = colorResource(id = R.color.black),
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .constrainAs(emptyTextAuthor) {
+                            top.linkTo(anchor = emptyText.bottom)
+//                        bottom.linkTo(anchor = parent.bottom)
+                            start.linkTo(anchor = parent.start, margin = 20.dp)
+                            end.linkTo(anchor = parent.end, margin = 20.dp)
+//                        centerAround(anchor = emptyText.bottom)
+                        }
+                )
+            }
+
+            if (visibile) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
+                    contentDescription = "Delete icon",
+                    modifier = Modifier
+                        .clickable { expanded = true }
+                        .constrainAs(deleteIcon) {
+                            top.linkTo(anchor = title.top)
+                            bottom.linkTo(anchor = title.bottom)
+                            end.linkTo(anchor = parent.end, margin = 20.dp)
+                        }
+                )
+
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier.constrainAs(deleteMenu) {
+                        top.linkTo(anchor = deleteIcon.bottom)
+                        end.linkTo(anchor = deleteIcon.end)
+                    }
+                ) {
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Deleted all to-dos")
+                        expanded = false
+                    }) {
+                        Text("Delete all to-dos")
+                    }
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Deleted all completed to-dos")
+                        expanded = false
+                    }) {
+                        Text("Delete all completed to-dos")
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(60.dp)
+                        .background(color = colorResource(id = R.color.color_primary_accent_2))
+                        .constrainAs(filterSurface) {
+                            top.linkTo(anchor = deleteIcon.bottom, margin = 20.dp)
+                            start.linkTo(anchor = parent.start)
+                            end.linkTo(anchor = parent.end)
+                        }
+                )
+
+                TextButton(
+                    onClick = { filterExpanded = !filterExpanded },
+                    modifier = Modifier.constrainAs(filterTextField) {
+                        top.linkTo(anchor = filterSurface.top)
+                        bottom.linkTo(anchor = filterSurface.bottom)
+                        end.linkTo(anchor = filterSurface.end, margin = 20.dp)
+                    }) {
+                    Text(
+                        text = text,
+                        fontSize = 14.sp,
+                        fontFamily = SpaceGrotesk,
+                        fontWeight = FontWeight.Medium,
+                        color = colorResource(id = R.color.black),
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = "Filter Button",
+                        tint = colorResource(id = R.color.black)
+                    )
+                }
+
+                DropdownMenu(
+                    expanded = filterExpanded,
+                    onDismissRequest = { filterExpanded = false },
+                    modifier = Modifier.constrainAs(deleteMenu) {
+                        top.linkTo(anchor = deleteIcon.bottom)
+                        end.linkTo(anchor = deleteIcon.end)
+                    }
+                ) {
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Showing all to-dos")
+                        filterExpanded = false
+                        text = "All"
+                    }) {
+                        Text("All")
+                    }
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Showing incomplete to-dos")
+                        filterExpanded = false
+                        text = "Incomplete"
+                    }) {
+                        Text("Incomplete")
+                    }
+                    DropdownMenuItem(onClick = {
+                        showToast(context, "Showing completed to-dos")
+                        filterExpanded = false
+                        text = "Completed"
+                    }) {
+                        Text("Completed")
+                    }
+                }
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_sort_black_24dp),
+                    contentDescription = "Filter Icon",
+                    modifier = Modifier
+                        .constrainAs(filterIcon) {
+                            top.linkTo(anchor = filterSurface.top)
+                            bottom.linkTo(anchor = filterSurface.bottom)
+                            end.linkTo(anchor = filterTextField.start, margin = 16.dp)
+                        }
+                )
+
+                ListTodos(
+                    todos = todos!!, modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(todoList) {
+                            top.linkTo(anchor = filterSurface.bottom)
+                            end.linkTo(anchor = parent.end)
+                            start.linkTo(anchor = parent.start)
+                        }
+                )
+            }
+
+            FloatingActionButton(
+                onClick = {
+                    showToast(context, "You'll be able to add to-dos soon")
+                    coroutineScope.launch {
+                        if (bottomSheetScaffoldState.bottomSheetState.isCollapsed)
+                            bottomSheetScaffoldState.bottomSheetState.expand()
+                        else
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
+                    }
+                },
+                backgroundColor = colorResource(id = R.color.color_primary_dark),
+                modifier = Modifier.constrainAs(addButton) {
+                    bottom.linkTo(parent.bottom, margin = 16.dp)
+                    end.linkTo(anchor = parent.end, margin = 20.dp)
+                }) {
                 Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = "Filter Button",
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add to-do button",
                     tint = colorResource(id = R.color.black)
                 )
             }
+        }
+    }
+}
 
-            DropdownMenu(
-                expanded = filterExpanded,
-                onDismissRequest = { filterExpanded = false },
-                modifier = Modifier.constrainAs(deleteMenu) {
-                    top.linkTo(anchor = deleteIcon.bottom)
-                    end.linkTo(anchor = deleteIcon.end)
-                }
-            ) {
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing all to-dos")
-                    filterExpanded = false
-                    text = "All"
-                }) {
-                    Text("All")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing incomplete to-dos")
-                    filterExpanded = false
-                    text = "Incomplete"
-                }) {
-                    Text("Incomplete")
-                }
-                DropdownMenuItem(onClick = {
-                    showToast(context, "Showing completed to-dos")
-                    filterExpanded = false
-                    text = "Completed"
-                }) {
-                    Text("Completed")
-                }
-            }
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun BottomSheet(scaffoldState: BottomSheetScaffoldState, todo: Todo) {
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetContent = { TodoDialogContent(todo = Todo()) },
+        sheetPeekHeight = 0.dp
+    ) {
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_sort_black_24dp),
-                contentDescription = "Filter Icon",
-                modifier = Modifier
-                    .constrainAs(filterIcon) {
-                        top.linkTo(anchor = filterSurface.top)
-                        bottom.linkTo(anchor = filterSurface.bottom)
-                        end.linkTo(anchor = filterTextField.start, margin = 16.dp)
-                    }
+    }
+}
+
+@Composable
+fun TodoDialogContent(todo: Todo) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 20.dp)
+//            .background(shape = RoundedCornerShape(4.dp), color = Color.White)
+    ) {
+
+        Text(
+            text = if (todo.id == 0) "New To-Do" else "Update To-Do",
+            fontSize = 16.sp,
+            fontFamily = SpaceGrotesk,
+            color = colorResource(id = R.color.black),
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+
+        OutlinedTextField(
+            value = todo.todo,
+            onValueChange = {},
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
+
+        Box(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth()
+                .padding(top = 10.dp)
+                .background(color = colorResource(id = R.color.color_primary))
+                .clickable { },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_alarm_on_black_24dp),
+                contentDescription = "",
+                modifier = Modifier.padding(start = 16.dp)
             )
 
-            ListTodos(
-                todos = todos!!, modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(todoList) {
-                        top.linkTo(anchor = filterSurface.bottom)
-                        end.linkTo(anchor = parent.end)
-                        start.linkTo(anchor = parent.start)
-                    }
+            Text(
+                text = "Click to set reminder",
+                fontSize = 16.sp,
+                fontFamily = SpaceGrotesk,
+                color = colorResource(id = R.color.black),
+                fontWeight = FontWeight.Normal
             )
         }
 
-        FloatingActionButton(
-            onClick = { showToast(context, "You'll be able to add to-dos soon") },
-            backgroundColor = colorResource(id = R.color.color_primary_dark),
-            modifier = Modifier.constrainAs(addButton) {
-                bottom.linkTo(parent.bottom, margin = 16.dp)
-                end.linkTo(anchor = parent.end, margin = 20.dp)
-            }) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = "Add to-do button",
-                tint = colorResource(id = R.color.black)
-            )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            OutlinedButton(
+                onClick = { },
+                shape = RoundedCornerShape(50.dp), modifier = Modifier.height(45.dp).padding(start = 30.dp)
+            ) {
+                Text(
+                    text = "Cancel",
+                    fontSize = 16.sp,
+                    fontFamily = SpaceGrotesk,
+                    color = colorResource(id = R.color.black),
+                    fontWeight = FontWeight.Medium
+                )
+            }
+
+            Button(
+                onClick = { }, shape = RoundedCornerShape(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = colorResource(
+                        id = R.color.color_primary
+                    )
+                ), modifier = Modifier.height(45.dp)
+            ) {
+                Text(
+                    text = "Save",
+                    fontSize = 16.sp,
+                    fontFamily = SpaceGrotesk,
+                    color = colorResource(id = R.color.black),
+                    fontWeight = FontWeight.Medium
+                )
+            }
         }
     }
 }
