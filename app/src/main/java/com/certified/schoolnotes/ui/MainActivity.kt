@@ -1,6 +1,7 @@
 package com.certified.schoolnotes.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.activity.viewModels
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.certified.schoolnotes.data.model.Todo
 import com.certified.schoolnotes.ui.screens.MainScreen
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +43,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen(viewModel)
+
+                    val todos: List<Todo> by viewModel.todos.collectAsState(initial = listOf())
+                    Log.d("TAG", "TodoScreen: $todos")
+                    MainScreen(viewModel, todos)
                 }
             }
         }

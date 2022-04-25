@@ -27,7 +27,7 @@ class SchoolNotesRepository @Inject constructor(private val schoolNotesDAO: Scho
 
     val allTodos: Flow<List<Todo>> = schoolNotesDAO.getAllTodos()
 
-    suspend fun insertNote(todo: Todo) {
+    suspend fun insertTodo(todo: Todo) {
         schoolNotesDAO.insertTodo(todo)
     }
 

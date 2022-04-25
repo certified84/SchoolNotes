@@ -26,52 +26,52 @@ import kotlinx.coroutines.flow.Flow
 interface SchoolNotesDAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNote(note: Note)
+    suspend fun insertNote(note: Note)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertCourse(course: Course)
+    suspend fun insertCourse(course: Course)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertTodo(todo: Todo)
+    suspend fun insertTodo(todo: Todo)
 
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    fun insertBookMark(bookMark: BookMark)
 
     @Update
-    fun updateNote(note: Note)
+    suspend fun updateNote(note: Note)
 
     @Update
-    fun updateCourse(course: Course)
+    suspend fun updateCourse(course: Course)
 
     @Update
-    fun updateTodo(todo: Todo)
+    suspend fun updateTodo(todo: Todo)
 
 //    @Update
-//    fun updateBookMark(bookMark: BookMark)
+//    suspend fun updateBookMark(bookMark: BookMark)
 
     @Delete
-    fun deleteNote(note: Note)
+    suspend fun deleteNote(note: Note)
 
     @Delete
-    fun deleteCourse(course: Course)
+    suspend fun deleteCourse(course: Course)
 
     @Delete
-    fun deleteTodo(todo: Todo)
+    suspend fun deleteTodo(todo: Todo)
 
 //    @Delete
-//    fun deleteBookMark(bookMark: BookMark)
+//    suspend fun deleteBookMark(bookMark: BookMark)
 
     @Query("DELETE FROM note_table ")
-    fun deleteAllNotes()
+    suspend fun deleteAllNotes()
 
     @Query("DELETE FROM course_table ")
-    fun deleteAllCourses()
+    suspend fun deleteAllCourses()
 
     @Query("DELETE FROM todo_table ")
-    fun deleteAllTodos()
+    suspend fun deleteAllTodos()
 
 //    @Query("DELETE FROM bookmark_table ")
-//    fun deleteAllBookMarks()
+//    suspend fun deleteAllBookMarks()
 
     @Query("SELECT * FROM note_table ORDER BY note_title ASC")
     fun getAllNotes(): Flow<List<Note>>
@@ -83,25 +83,25 @@ interface SchoolNotesDAO {
     fun getAllTodos(): Flow<List<Todo>>
 
 //    @Query("SELECT * FROM bookmark_table ORDER BY id ASC")
-//    fun getAllBookMarks(): Flow<List<BookMark>>
+//    suspend fun getAllBookMarks(): Flow<List<BookMark>>
 
 //    @Query("DELETE FROM bookmark_table WHERE note_id = :noteId")
-//    fun deleteBookMarkedNote(noteId: Int)
+//    suspend fun deleteBookMarkedNote(noteId: Int)
 
     @Query("DELETE FROM todo_table WHERE isDone IN (1)")
-    fun deleteCompletedTodos()
+    suspend fun deleteCompletedTodos()
 
 //    @Query("SELECT * FROM bookmark_table WHERE note_id = :noteId")
-//    fun getBookMarkAt(noteId: Int): LiveData<List<BookMark>>
+//    suspend fun getBookMarkAt(noteId: Int): LiveData<List<BookMark>>
 
-    @Query("SELECT * FROM note_table WHERE course_code IN (:course_code)")
-    fun getNotesAt(course_code: String): Flow<List<Note>>
+    @Query("SELECT * FROM note_table WHERE course_code IN (:courseCode)")
+    fun getNotesAt(courseCode: String): Flow<List<Note>>
 
     @Query("SELECT course_code FROM course_table WHERE course_title = :courseTitle")
-    fun getCourseCode(courseTitle: String): String?
+    suspend fun getCourseCode(courseTitle: String): String?
 
     @Query("SELECT course_title FROM course_table WHERE course_code = :courseCode")
-    fun getCourseTitle(courseCode: String): String?
+    suspend fun getCourseTitle(courseCode: String): String?
 
 //    @Query("SELECT note_id FROM bookmark_table")
 //    fun getNoteIds(): Flow<List<Int>>

@@ -16,16 +16,17 @@
 
 package com.certified.schoolnotes.ui
 
+import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.certified.schoolnotes.data.model.Todo
 import com.certified.schoolnotes.data.repository.SchoolNotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,13 +34,22 @@ class SchoolNotesViewModel @Inject constructor(private val repository: SchoolNot
     ViewModel() {
 
     private val _todos by mutableStateOf(MutableLiveData<List<Todo>?>())
-    val todos: LiveData<List<Todo>?> get() = _todos
+    val todos: Flow<List<Todo>> = repository.allTodos
 
     init {
         getTodos()
     }
 
     private fun getTodos() {
-        _todos.value = repository.allTodos.asLiveData().value
+        viewModelScope.launch {
+            _todos.value = repository.allTodos.asLiveData().value
+            repository.allTodos.collect { Log.d("TAG", "getTodos: $it")}
+        }
+    }
+
+    fun insertTodo(todo: Todo) {
+        viewModelScope.launch {
+            repository.insertTodo(todo)
+        }
     }
 }

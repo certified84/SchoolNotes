@@ -16,6 +16,7 @@
 
 package com.certified.schoolnotes.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -45,11 +46,13 @@ import com.certified.schoolnotes.ui.SchoolNotesViewModel
 import com.certified.schoolnotes.ui.theme.SpaceGrotesk
 import com.certified.schoolnotes.util.Extensions.showToast
 import com.certified.schoolnotes.util.formatReminderDate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TodoScreen(viewModel: SchoolNotesViewModel) {
+fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
 
 //    val viewModel: SchoolNotesViewModel by viewModel()
     val context = LocalContext.current
@@ -57,19 +60,15 @@ fun TodoScreen(viewModel: SchoolNotesViewModel) {
     var filterExpanded by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("All") }
     val coroutineScope = rememberCoroutineScope()
-    var bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
-    var todo by remember { mutableStateOf(Todo()) }
-
-    val todos = viewModel.todos.observeAsState(listOf()).value
-    var visibile by remember { mutableStateOf(true) }
-    visibile = !todos.isNullOrEmpty()
+    val todo by remember { mutableStateOf(Todo()) }
 
     BottomSheetScaffold(
         backgroundColor = colorResource(R.color.color_primary_accent),
         scaffoldState = bottomSheetScaffoldState,
-        sheetContent = { TodoDialogContent(todo = todo) },
+        sheetContent = { TodoDialogContent(todo = todo, bottomSheetScaffoldState, viewModel) },
         sheetPeekHeight = 0.dp,
         modifier = Modifier
             .fillMaxSize()
@@ -94,8 +93,10 @@ fun TodoScreen(viewModel: SchoolNotesViewModel) {
                         end.linkTo(anchor = parent.end)
                     }
             )
+            val visible by remember { mutableStateOf(todos.isEmpty()) }
+            Log.d("TAG", "TodoScreen: $visible")
 
-            if (!visibile) {
+            if (visible) {
                 Text(
                     text = "\"You may delay, but time will not.\"",
                     fontSize = 20.sp,
@@ -129,7 +130,7 @@ fun TodoScreen(viewModel: SchoolNotesViewModel) {
                 )
             }
 
-            if (visibile) {
+            if (!visible) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_delete_icon_24dp),
                     contentDescription = "Delete icon",
@@ -276,26 +277,32 @@ fun TodoScreen(viewModel: SchoolNotesViewModel) {
     }
 }
 
+//@OptIn(ExperimentalMaterialApi::class)
+//@Composable
+//fun BottomSheet(scaffoldState: BottomSheetScaffoldState, todo: Todo) {
+//    BottomSheetScaffold(
+//        scaffoldState = scaffoldState,
+//        sheetContent = { TodoDialogContent(todo = Todo()) },
+//        sheetPeekHeight = 0.dp
+//    ) {
+//
+//    }
+//}
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheet(scaffoldState: BottomSheetScaffoldState, todo: Todo) {
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetContent = { TodoDialogContent(todo = Todo()) },
-        sheetPeekHeight = 0.dp
-    ) {
-
-    }
-}
-
-@Composable
-fun TodoDialogContent(todo: Todo) {
+fun TodoDialogContent(
+    todo: Todo,
+    bottomSheetScaffoldState: BottomSheetScaffoldState,
+    viewModel: SchoolNotesViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp)
 //            .background(shape = RoundedCornerShape(4.dp), color = Color.White)
     ) {
+        var text by remember { mutableStateOf(todo.todo) }
 
         Text(
             text = if (todo.id == 0) "New To-Do" else "Update To-Do",
@@ -309,8 +316,8 @@ fun TodoDialogContent(todo: Todo) {
         )
 
         OutlinedTextField(
-            value = todo.todo,
-            onValueChange = {},
+            value = text,
+            onValueChange = { text = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
@@ -348,8 +355,15 @@ fun TodoDialogContent(todo: Todo) {
         ) {
 
             OutlinedButton(
-                onClick = { },
-                shape = RoundedCornerShape(50.dp), modifier = Modifier.height(45.dp).padding(start = 30.dp)
+                onClick = {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        bottomSheetScaffoldState.bottomSheetState.collapse()
+                    }
+                },
+                shape = RoundedCornerShape(50.dp),
+                modifier = Modifier
+                    .height(45.dp)
+                    .padding(start = 30.dp)
             ) {
                 Text(
                     text = "Cancel",
@@ -361,7 +375,11 @@ fun TodoDialogContent(todo: Todo) {
             }
 
             Button(
-                onClick = { }, shape = RoundedCornerShape(50.dp),
+                onClick = {
+                    if (todo.id == 0) {
+                        viewModel.insertTodo(todo.copy(todo = text))
+                    }
+                }, shape = RoundedCornerShape(50.dp),
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = colorResource(
                         id = R.color.color_primary
