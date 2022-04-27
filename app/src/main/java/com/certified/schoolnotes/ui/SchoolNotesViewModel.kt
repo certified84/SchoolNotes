@@ -52,4 +52,16 @@ class SchoolNotesViewModel @Inject constructor(private val repository: SchoolNot
             repository.insertTodo(todo)
         }
     }
+
+    fun updateTodo(todo: Todo) {
+        viewModelScope.launch {
+            repository.updateTodo(todo)
+        }
+    }
+
+    fun deleteTodo(todo: Todo) {
+        viewModelScope.launch {
+            repository.deleteTodo(todo)
+        }
+    }
 }

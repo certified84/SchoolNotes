@@ -17,6 +17,7 @@
 package com.certified.schoolnotes.ui.screens
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +30,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -242,7 +242,7 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
                 )
 
                 ListTodos(
-                    todos = todos!!, modifier = Modifier
+                    todos = todos!!, viewModel = viewModel, modifier = Modifier
                         .fillMaxWidth()
                         .constrainAs(todoList) {
                             top.linkTo(anchor = filterSurface.bottom)
@@ -276,18 +276,6 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
         }
     }
 }
-
-//@OptIn(ExperimentalMaterialApi::class)
-//@Composable
-//fun BottomSheet(scaffoldState: BottomSheetScaffoldState, todo: Todo) {
-//    BottomSheetScaffold(
-//        scaffoldState = scaffoldState,
-//        sheetContent = { TodoDialogContent(todo = Todo()) },
-//        sheetPeekHeight = 0.dp
-//    ) {
-//
-//    }
-//}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -399,26 +387,27 @@ fun TodoDialogContent(
 }
 
 @Composable
-fun ListTodos(todos: List<Todo>, modifier: Modifier) {
+fun ListTodos(todos: List<Todo>, modifier: Modifier, viewModel: SchoolNotesViewModel) {
     LazyColumn(modifier = modifier) {
         items(items = todos, key = { todo ->
             todo.id
         }) { todo ->
-            TodoItem(todo = todo)
+            TodoItem(todo = todo, viewModel)
         }
     }
 }
 
 @Composable
-fun TodoItem(todo: Todo) {
+fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
 
     var isChecked by remember { mutableStateOf(todo.isDone) }
+    var openDialog by remember { mutableStateOf(false) }
 
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.white))
-            .clickable { isChecked = !isChecked }
+//            .clickable { isChecked = !isChecked }
     ) {
 
         val (todoIcon, todoTitle, notificationIcon, todoReminder, checkBox) = createRefs()
@@ -450,7 +439,10 @@ fun TodoItem(todo: Todo) {
 
         Checkbox(
             checked = isChecked,
-            onCheckedChange = { isChecked = it },
+            onCheckedChange = {
+                isChecked = it
+                openDialog = it
+            },
             modifier = Modifier
                 .constrainAs(checkBox) {
                     top.linkTo(anchor = parent.top, margin = 4.dp)
@@ -485,5 +477,77 @@ fun TodoItem(todo: Todo) {
                     start.linkTo(anchor = notificationIcon.end, margin = 20.dp)
                 }
         )
+
+        if (openDialog)
+            AlertDialog(
+                onDismissRequest = { openDialog = false },
+                title = {
+                    Text(
+                        text = "Delete Todo?",
+                        fontSize = 18.sp,
+                        fontFamily = SpaceGrotesk,
+                        fontWeight = FontWeight.Medium
+                    )
+                },
+                text = {
+                    Text(
+                        text = "This todo has been marked as done. Would you like to delete it?",
+                        fontSize = 16.sp,
+                        fontFamily = SpaceGrotesk,
+                        fontWeight = FontWeight.Normal
+                    )
+                },
+                buttons = {
+                    Row(
+                        modifier = Modifier
+                            .padding(all = 8.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .width(100.dp)
+                                .padding(end = 4.dp),
+                            shape = RoundedCornerShape(25.dp),
+                            border = BorderStroke(
+                                width = 1.dp,
+                                color = colorResource(id = R.color.color_primary)
+                            ),
+                            onClick = {
+                                viewModel.updateTodo(todo.copy(isDone = true))
+                                openDialog = false
+                            }
+                        ) {
+                            Text(
+                                text = "No",
+                                fontSize = 16.sp,
+                                fontFamily = SpaceGrotesk,
+                                fontWeight = FontWeight.Medium,
+                                color = colorResource(id = R.color.black),
+                            )
+                        }
+                        Button(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .width(100.dp)
+                                .padding(start = 4.dp),
+                            shape = RoundedCornerShape(25.dp),
+                            colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.color_primary)),
+                            onClick = {
+                                viewModel.deleteTodo(todo)
+                                openDialog = false
+                            }
+                        ) {
+                            Text(
+                                text = "Yes",
+                                fontSize = 16.sp,
+                                fontFamily = SpaceGrotesk,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+                }
+            )
     }
 }

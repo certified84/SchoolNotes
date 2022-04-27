@@ -34,4 +34,8 @@ class SchoolNotesRepository @Inject constructor(private val schoolNotesDAO: Scho
     suspend fun updateTodo(todo: Todo) {
         schoolNotesDAO.updateTodo(todo)
     }
+
+    suspend fun deleteTodo(todo: Todo) {
+        schoolNotesDAO.deleteTodo(todo)
+    }
 }
