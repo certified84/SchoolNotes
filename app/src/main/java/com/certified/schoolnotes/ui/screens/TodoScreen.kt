@@ -407,7 +407,7 @@ fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.white))
-//            .clickable { isChecked = !isChecked }
+            .clickable {  }
     ) {
 
         val (todoIcon, todoTitle, notificationIcon, todoReminder, checkBox) = createRefs()
@@ -480,7 +480,10 @@ fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
 
         if (openDialog)
             AlertDialog(
-                onDismissRequest = { openDialog = false },
+                onDismissRequest = {
+                    openDialog = false
+                    viewModel.updateTodo(todo.copy(isDone = isChecked))
+                },
                 title = {
                     Text(
                         text = "Delete Todo?",
@@ -515,6 +518,7 @@ fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
                                 color = colorResource(id = R.color.color_primary)
                             ),
                             onClick = {
+                                Log.d("TAG", "TodoItem: ${todo.copy(isDone = true)}")
                                 viewModel.updateTodo(todo.copy(isDone = true))
                                 openDialog = false
                             }
@@ -549,5 +553,7 @@ fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
                     }
                 }
             )
+        else if (!isChecked)
+            viewModel.updateTodo(todo.copy(isDone = false))
     }
 }
