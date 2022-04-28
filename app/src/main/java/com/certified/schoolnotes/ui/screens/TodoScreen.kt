@@ -63,6 +63,7 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
         bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
     )
     val todo by remember { mutableStateOf(Todo()) }
+    var toDisplay by remember { mutableStateOf("All") }
 
     BottomSheetScaffold(
         backgroundColor = colorResource(R.color.color_primary_accent),
@@ -209,23 +210,23 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
                     }
                 ) {
                     DropdownMenuItem(onClick = {
-                        showToast(context, "Showing all to-dos")
                         filterExpanded = false
                         text = "All"
+                        toDisplay = "All"
                     }) {
                         Text("All")
                     }
                     DropdownMenuItem(onClick = {
-                        showToast(context, "Showing incomplete to-dos")
                         filterExpanded = false
                         text = "Incomplete"
+                        toDisplay = "Incomplete"
                     }) {
                         Text("Incomplete")
                     }
                     DropdownMenuItem(onClick = {
-                        showToast(context, "Showing completed to-dos")
                         filterExpanded = false
                         text = "Completed"
+                        toDisplay = "Completed"
                     }) {
                         Text("Completed")
                     }
@@ -243,7 +244,13 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
                 )
 
                 ListTodos(
-                    todos = todos!!, viewModel = viewModel, modifier = Modifier
+                    todos = todos.filter {
+                        when (toDisplay) {
+                            "Incomplete" -> !it.isDone
+                            "Completed" -> it.isDone
+                            else -> true
+                        }
+                    }, viewModel = viewModel, modifier = Modifier
                         .fillMaxWidth()
                         .constrainAs(todoList) {
                             top.linkTo(anchor = filterSurface.bottom)
@@ -407,7 +414,7 @@ fun TodoItem(todo: Todo, viewModel: SchoolNotesViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .background(color = colorResource(id = R.color.white))
-            .clickable {  }
+            .clickable { }
     ) {
 
         val (todoIcon, todoTitle, notificationIcon, todoReminder, checkBox) = createRefs()
