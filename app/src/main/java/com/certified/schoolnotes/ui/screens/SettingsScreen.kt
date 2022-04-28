@@ -148,6 +148,41 @@ fun SettingsScreen(user: User) {
             )
         }
 
+        var isDarkMode by remember { mutableStateOf(false) }
+        Row(
+            modifier = Modifier
+                .padding(start = 24.dp, end = 24.dp, top = 24.dp)
+                .fillMaxWidth()
+                .clickable { isDarkMode = !isDarkMode }
+        ) {
+
+            Icon(
+                painter = painterResource(id = R.drawable.ic_wb_sunny),
+                contentDescription = "Theme icon",
+                tint = colorResource(id = R.color.black),
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+
+            Text(
+                text = "Dark Theme",
+                fontSize = 16.sp,
+                fontFamily = SpaceGrotesk,
+                fontWeight = FontWeight.Normal,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .align(Alignment.CenterVertically)
+            )
+
+            Switch(
+                checked = isDarkMode, onCheckedChange = { isDarkMode = !isDarkMode },
+                modifier = Modifier.align(Alignment.CenterVertically),
+                colors = SwitchDefaults.colors(
+                    checkedTrackColor = colorResource(id = R.color.color_primary_dark),
+                    checkedThumbColor = colorResource(id = R.color.color_primary_dark)
+                )
+            )
+        }
+
         var isChecked by remember { mutableStateOf(false) }
         Row(
             modifier = Modifier
@@ -173,11 +208,13 @@ fun SettingsScreen(user: User) {
                     .align(Alignment.CenterVertically)
             )
 
-            Checkbox(
-                checked = isChecked,
-                onCheckedChange = { isChecked = !isChecked },
+            Switch(
+                checked = isChecked, onCheckedChange = { isChecked = !isChecked },
                 modifier = Modifier.align(Alignment.CenterVertically),
-                colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.color_primary_dark))
+                colors = SwitchDefaults.colors(
+                    checkedTrackColor = colorResource(id = R.color.color_primary_dark),
+                    checkedThumbColor = colorResource(id = R.color.color_primary_dark)
+                )
             )
         }
 
@@ -191,7 +228,7 @@ fun SettingsScreen(user: User) {
         ) {
 
             Icon(
-                painter = painterResource(id = R.drawable.ic_notification_icon_16dp),
+                painter = painterResource(id = R.drawable.ic_shield_done_24dp),
                 contentDescription = "Privacy icon",
                 tint = colorResource(id = R.color.black),
                 modifier = Modifier.align(Alignment.CenterVertically)
