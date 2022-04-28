@@ -54,7 +54,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
 
-//    val viewModel: SchoolNotesViewModel by viewModel()
     val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
     var filterExpanded by remember { mutableStateOf(false) }
@@ -152,14 +151,16 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
                     }
                 ) {
                     DropdownMenuItem(onClick = {
-                        showToast(context, "Deleted all to-dos")
+                        viewModel.deleteAllTodos()
                         expanded = false
+                        showToast(context, "Deleted all to-dos")
                     }) {
                         Text("Delete all to-dos")
                     }
                     DropdownMenuItem(onClick = {
-                        showToast(context, "Deleted all completed to-dos")
+                        viewModel.deleteCompletedTodos()
                         expanded = false
+                        showToast(context, "Deleted all completed to-dos")
                     }) {
                         Text("Delete all completed to-dos")
                     }
@@ -254,7 +255,6 @@ fun TodoScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
 
             FloatingActionButton(
                 onClick = {
-                    showToast(context, "You'll be able to add to-dos soon")
                     coroutineScope.launch {
                         if (bottomSheetScaffoldState.bottomSheetState.isCollapsed)
                             bottomSheetScaffoldState.bottomSheetState.expand()

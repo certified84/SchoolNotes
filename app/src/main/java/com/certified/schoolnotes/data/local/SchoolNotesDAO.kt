@@ -70,8 +70,8 @@ interface SchoolNotesDAO {
     @Query("DELETE FROM todo_table ")
     suspend fun deleteAllTodos()
 
-//    @Query("DELETE FROM bookmark_table ")
-//    suspend fun deleteAllBookMarks()
+    @Query("DELETE FROM todo_table WHERE isDone IN (1)")
+    suspend fun deleteCompletedTodos()
 
     @Query("SELECT * FROM note_table ORDER BY note_title ASC")
     fun getAllNotes(): Flow<List<Note>>
@@ -87,9 +87,6 @@ interface SchoolNotesDAO {
 
 //    @Query("DELETE FROM bookmark_table WHERE note_id = :noteId")
 //    suspend fun deleteBookMarkedNote(noteId: Int)
-
-    @Query("DELETE FROM todo_table WHERE isDone IN (1)")
-    suspend fun deleteCompletedTodos()
 
 //    @Query("SELECT * FROM bookmark_table WHERE note_id = :noteId")
 //    suspend fun getBookMarkAt(noteId: Int): LiveData<List<BookMark>>
