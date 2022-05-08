@@ -23,6 +23,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.certified.schoolnotes.data.model.Course
 import com.certified.schoolnotes.data.model.Todo
 import com.certified.schoolnotes.data.repository.SchoolNotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,13 +38,24 @@ class SchoolNotesViewModel @Inject constructor(private val repository: SchoolNot
     private val _todos by mutableStateOf(MutableLiveData<List<Todo>?>())
     val todos: Flow<List<Todo>> = repository.allTodos
 
+    private val _courses by mutableStateOf(MutableLiveData<List<Course>?>())
+    val courses: Flow<List<Course>> = repository.allCourses
+
     init {
         getTodos()
+        getCourses()
     }
 
     private fun getTodos() {
         viewModelScope.launch {
             _todos.value = repository.allTodos.asLiveData().value
+            repository.allTodos.collect { Log.d("TAG", "getTodos: $it") }
+        }
+    }
+
+    private fun getCourses() {
+        viewModelScope.launch {
+            _courses.value = repository.allCourses.asLiveData().value
             repository.allTodos.collect { Log.d("TAG", "getTodos: $it") }
         }
     }

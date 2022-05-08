@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.certified.schoolnotes.data.model.Course
 import com.certified.schoolnotes.data.model.Todo
 import com.certified.schoolnotes.ui.screens.MainScreen
 import com.certified.schoolnotes.ui.theme.SchoolNotesTheme
@@ -61,8 +62,9 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     val todos: List<Todo> by viewModel.todos.collectAsState(initial = listOf())
+                    val courses: List<Course> by viewModel.courses.collectAsState(initial = listOf())
                     Log.d("TAG", "TodoScreen: $todos")
-                    MainScreen(viewModel, todos)
+                    MainScreen(viewModel, todos, courses)
                 }
             }
         }

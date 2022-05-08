@@ -18,6 +18,7 @@ package com.certified.schoolnotes.ui.screens
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -255,13 +256,26 @@ fun SettingsScreen(user: User) {
             )
         }
 
+        val  version = context.packageManager.getPackageInfo(context.packageName, 0).versionName
+        val body = """
+            -------------------------------------------------
+            Please do not remove this information
+            Device OS: Android
+            Device OS Version: ${Build.VERSION.RELEASE}
+            App Version: $version
+            Device Brand: ${Build.BRAND}
+            Device Model: ${Build.MODEL}
+            Device Manufacturer: ${Build.MANUFACTURER}
+            -------------------------------------------------
+            
+        """.trimIndent()
         Row(
             modifier = Modifier
                 .padding(start = 24.dp, end = 24.dp, top = 24.dp)
                 .fillMaxWidth()
                 .clickable {
                     val intent = Intent(Intent.ACTION_SENDTO)
-                    intent.data = Uri.parse("mailto:Sammie_kt@pm.me?subject=Feedback")
+                    intent.data = Uri.parse("mailto:Sammie_kt@pm.me?subject=Feedback&body=$body")
                     context.startActivity(intent)
                 }
         ) {

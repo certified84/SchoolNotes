@@ -32,17 +32,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.certified.schoolnotes.R
+import com.certified.schoolnotes.data.model.Course
 import com.certified.schoolnotes.data.model.Todo
 import com.certified.schoolnotes.ui.BottomNavGraph
 import com.certified.schoolnotes.ui.SchoolNotesViewModel
 
 @Composable
-fun MainScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>) {
+fun MainScreen(viewModel: SchoolNotesViewModel, todos: List<Todo>, courses: List<Course>) {
     val navController = rememberNavController()
     Scaffold(bottomBar = {
         BottomBar(navController = navController)
     }) {
-        BottomNavGraph(navController = navController, viewModel = viewModel, todos = todos)
+        BottomNavGraph(
+            navController = navController,
+            viewModel = viewModel,
+            todos = todos,
+            courses = courses
+        )
     }
 }
 
@@ -85,6 +91,8 @@ fun RowScope.AddItem(
                 tint = colorResource(id = R.color.black)
             )
         },
-        modifier = Modifier.background(color = colorResource(id = R.color.color_primary_accent)).height(60.dp)
+        modifier = Modifier
+            .background(color = colorResource(id = R.color.color_primary_accent))
+            .height(60.dp)
     )
 }

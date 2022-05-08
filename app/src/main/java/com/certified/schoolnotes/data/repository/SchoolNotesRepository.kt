@@ -17,6 +17,7 @@
 package com.certified.schoolnotes.data.repository
 
 import com.certified.schoolnotes.data.local.SchoolNotesDAO
+import com.certified.schoolnotes.data.model.Course
 import com.certified.schoolnotes.data.model.Todo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -26,6 +27,8 @@ import javax.inject.Singleton
 class SchoolNotesRepository @Inject constructor(private val schoolNotesDAO: SchoolNotesDAO) {
 
     val allTodos: Flow<List<Todo>> = schoolNotesDAO.getAllTodos()
+
+    val allCourses: Flow<List<Course>> = schoolNotesDAO.getAllCourses()
 
     suspend fun insertTodo(todo: Todo) {
         schoolNotesDAO.insertTodo(todo)
